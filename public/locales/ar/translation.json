@@ -1,6 +1,6 @@
 
 {
-    "headerTitle": "دكتور النباتات",
+    "headerTitle": "طبيب النبات",
     "uploadTitle": "رفع أو التقاط صورة",
     "uploadInstructions": "اختر صورة للنبات الذي تريد تحليله.",
     "uploadButton": "رفع من الجهاز",
@@ -31,18 +31,9 @@
     "scientificName": "الاسم العلمي",
     "activeIngredient": "المادة الفعالة",
     "diseaseClassification": "تصنيف المرض",
-    "selectAnalyses": "تحديد تحليلات للإجراء",
+    "analyzedOn": "تم التحليل في: {{date}}",
     "deleteSelected": "حذف المحدد",
     "downloadSelected": "تحميل المحدد",
-    "selectItemsForAction": "تحديد العناصر",
-    "exitSelectionMode": "الخروج من التحديد",
-    "confirmDeleteTitle": "تأكيد الحذف",
-    "confirmDeleteMessage": "هل أنت متأكد من حذف {{count}} تحليلًا/تحليلات محددة؟",
-    "confirmDeleteButton": "حذف",
-    "noSelectedAnalysesToDelete": "الرجاء تحديد تحليلات للحذف.",
-    "noSelectedAnalysesToDownload": "الرجاء تحديد تحليلات للتحميل.",
-    "downloadComplete": "اكتمل التحميل!",
-    "analyzedOn": "تاريخ التحليل",
     "downloading": "جاري التحميل...",
-    "exitSelectionModeMessage": "اخرج من وضع التحديد لعرض أو تحليل عنصر واحد."
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف التحليلات المحددة؟ لا يمكن التراجع عن هذا الإجراء."
 }

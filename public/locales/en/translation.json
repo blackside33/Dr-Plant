@@ -1,6 +1,6 @@
 
 {
-    "headerTitle": "Plant Doctor",
+    "headerTitle": "Doctor Plant",
     "uploadTitle": "Upload or Capture an Image",
     "uploadInstructions": "Select a photo of the plant you want to analyze.",
     "uploadButton": "Upload from Device",
@@ -12,7 +12,7 @@
     "snapPhoto": "Snap Photo",
     "historyTitle": "Analysis History",
     "noHistory": "No analyses yet.",
-    "welcomeTitle": "Welcome to the Plant Doctor",
+    "welcomeTitle": "Welcome to Doctor Plant",
     "welcomeMessage": "Upload or capture a photo of a plant to get an AI-powered health analysis and treatment suggestions.",
     "analyzingMessage": "AI is thinking...",
     "analyzingSubtext": "Analyzing plant health.",
@@ -31,18 +31,9 @@
     "scientificName": "Scientific Name",
     "activeIngredient": "Active Ingredient",
     "diseaseClassification": "Disease Classification",
-    "selectAnalyses": "Select Analyses for Action",
+    "analyzedOn": "Analyzed On: {{date}}",
     "deleteSelected": "Delete Selected",
     "downloadSelected": "Download Selected",
-    "selectItemsForAction": "Select Items",
-    "exitSelectionMode": "Exit Selection",
-    "confirmDeleteTitle": "Confirm Deletion",
-    "confirmDeleteMessage": "Are you sure you want to delete {{count}} selected analyses?",
-    "confirmDeleteButton": "Delete",
-    "noSelectedAnalysesToDelete": "Please select analyses to delete.",
-    "noSelectedAnalysesToDownload": "Please select analyses to download.",
-    "downloadComplete": "Download complete!",
-    "analyzedOn": "Analyzed On",
     "downloading": "Downloading...",
-    "exitSelectionModeMessage": "Exit selection mode to view or analyze a single item."
+    "confirmDelete": "Are you sure you want to delete the selected analyses? This action cannot be undone."
 }
