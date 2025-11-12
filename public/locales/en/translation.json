@@ -30,5 +30,19 @@
     "commercialName": "Commercial Name",
     "scientificName": "Scientific Name",
     "activeIngredient": "Active Ingredient",
-    "diseaseClassification": "Disease Classification"
+    "diseaseClassification": "Disease Classification",
+    "selectAnalyses": "Select Analyses for Action",
+    "deleteSelected": "Delete Selected",
+    "downloadSelected": "Download Selected",
+    "selectItemsForAction": "Select Items",
+    "exitSelectionMode": "Exit Selection",
+    "confirmDeleteTitle": "Confirm Deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete {{count}} selected analyses?",
+    "confirmDeleteButton": "Delete",
+    "noSelectedAnalysesToDelete": "Please select analyses to delete.",
+    "noSelectedAnalysesToDownload": "Please select analyses to download.",
+    "downloadComplete": "Download complete!",
+    "analyzedOn": "Analyzed On",
+    "downloading": "Downloading...",
+    "exitSelectionModeMessage": "Exit selection mode to view or analyze a single item."
 }

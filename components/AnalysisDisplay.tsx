@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { AnalysisResultData, Treatment } from '../types';
 import { FlaskIcon, DnaIcon, LeafIcon, DownloadIcon } from './icons';
 
@@ -74,73 +73,28 @@ interface AnalysisDisplayProps {
   error: string | null;
   imagePreview: string | null;
   theme: 'light' | 'dark';
+  onDownloadSinglePdf: (analysis: AnalysisResultData) => Promise<void>;
+  isSelectionMode: boolean; // NEW PROP
 }
 
-export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview, theme }) => {
-  const { t } = useTranslation();
-  const analysisContentRef = useRef<HTMLDivElement>(null);
+export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview, theme, onDownloadSinglePdf, isSelectionMode }) => {
+  const { t, i18n } = useTranslation();
 
-  const handleDownloadPdf = async () => {
-    const contentToCapture = analysisContentRef.current;
-    if (!contentToCapture || !analysis) return;
-
-    const canvas = await html2canvas(contentToCapture, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: theme === 'dark' ? '#111827' : '#ffffff',
-        onclone: (document) => {
-             document.body.style.backgroundColor = theme === 'dark' ? '#1f2937' : '#f9fafb';
-        }
-    });
-    
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    if (imgHeight <= pageHeight) {
-        // If content fits on one page, stretch it to fill the entire page.
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, pageHeight);
-    } else {
-        // For content longer than one page, use corrected multi-page logic without stretching.
-        let position = 0;
-        let heightLeft = imgHeight;
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-
-        while (heightLeft > 0) {
-            position -= pageHeight;
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-        }
-    }
-    
-    // Add watermark to all pages
-    const pageCount = pdf.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-        pdf.setPage(i);
-        pdf.setFontSize(50);
-        pdf.setTextColor(theme === 'dark' ? 150 : 100);
-        const watermarkText = 'Plant Doctor AI';
-        
-        pdf.text(watermarkText, pageWidth / 2, pageHeight / 2, {
-            angle: 45,
-            align: 'center',
-            baseline: 'middle',
-            opacity: 0.2
-        });
-    }
-
-    pdf.save(`plant-analysis-${analysis.disease.replace(/\s+/g, '-')}.pdf`);
+  const handleDownloadPdfClick = async () => {
+    if (!analysis) return;
+    await onDownloadSinglePdf(analysis);
   };
   
+  // Render nothing if in selection mode and no current analysis is shown
+  if (isSelectionMode && !analysis && !imagePreview && !isLoading && !error) {
+    return <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full flex items-center justify-center">
+             <p className="text-gray-600 dark:text-gray-400 text-center">{t('exitSelectionModeMessage')}</p>
+           </div>;
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full overflow-y-auto">
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center justify-center min-h-full"> {/* min-h-full for better centering */}
         {isLoading && <Spinner />}
         {!isLoading && error && <div className="text-center text-red-500 dark:text-red-400 p-4 bg-red-100 dark:bg-red-900/50 rounded-md">
             <h3 className="font-bold text-lg">{t('analysisFailedTitle')}</h3>
@@ -158,8 +112,11 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
 
         {!isLoading && !error && analysis && (
           <div className="w-full">
-            <div ref={analysisContentRef} className="p-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100">
+            <div className="p-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100">
               <h2 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-4 text-center">{analysis.disease}</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center mb-4">
+                {t('analyzedOn')}: {new Date(analysis.timestamp).toLocaleString(i18n.language)}
+              </p>
               <img src={analysis.imageUrl} alt="Analyzed plant" className="w-full h-auto max-h-80 object-cover rounded-lg mb-6 shadow-md" />
               
               <div className="space-y-6">
@@ -189,7 +146,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
 
                   <div className="bg-gray-50 dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('description')}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{analysis.description}</p>
+                      <p className="text-gray-600 dark:text-gray-400 whitespace-pre-wrap">${analysis.description}</p>
                   </div>
                   
                   <div>
@@ -204,7 +161,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
             </div>
             <div className="mt-6 text-center">
               <button
-                onClick={handleDownloadPdf}
+                onClick={handleDownloadPdfClick}
                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 <DownloadIcon className="w-5 h-5 me-2" />
