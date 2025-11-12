@@ -46,5 +46,8 @@
     "gettingLocation": "Getting your location...",
     "weatherErrorTitle": "Could Not Fetch Weather",
     "weatherErrorBody": "Please ensure location permissions are enabled and try again.",
-    "close": "Close"
+    "close": "Close",
+    "installApplication": "Install Application",
+    "iosInstallTitle": "To install this app:",
+    "iosInstallBody": "Tap the 'Share' icon in your browser, then scroll down and tap 'Add to Home Screen'."
 }

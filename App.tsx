@@ -10,6 +10,7 @@ import { HistorySidebar } from './components/HistorySidebar';
 import { LeafIcon, WeatherIcon } from './components/icons';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { WeatherModal } from './components/WeatherModal';
+import { InstallPwaButton } from './components/InstallPwaButton';
 
 const Header: React.FC<{ 
   onWeatherClick: () => void;
@@ -24,6 +25,7 @@ const Header: React.FC<{
             </div>
             <div className="flex items-center space-x-1 md:space-x-2">
               <LanguageSwitcher />
+              <InstallPwaButton />
               <button
                 onClick={onWeatherClick}
                 className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
