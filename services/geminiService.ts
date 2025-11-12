@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type, GenerateContentResponse } from '@google/genai';
-import { Treatment } from '../types';
+import { Treatment, WeatherData } from '../types';
 
 export interface AnalysisResponse {
   disease: string;
@@ -112,4 +112,75 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
     }
     throw new Error('An unknown error occurred while communicating with the Gemini API.');
   }
+};
+
+
+export const getWeatherForecast = async (lat: number, lon: number, language: string): Promise<WeatherData> => {
+    const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+
+    const langInstruction = language === 'ar'
+        ? "All text values in the JSON response must be in Arabic."
+        : "All text values in the JSON response must be in English.";
+
+    const prompt = `
+        You are a helpful meteorological assistant specializing in agricultural advice.
+        Provide a weather forecast for the location with latitude ${lat} and longitude ${lon}.
+        The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
+        ${langInstruction}
+
+        The JSON object must contain the following keys:
+        1. "current_temp": A number representing the current temperature in Celsius.
+        2. "condition": A short string describing the current weather (e.g., "Sunny", "Partly Cloudy").
+        3. "humidity": A number representing the current humidity percentage.
+        4. "wind_speed": A number representing the current wind speed in kilometers per hour (km/h).
+        5. "agricultural_summary": A brief, simple, and helpful summary for farmers based on the current weather and short-term forecast.
+        6. "forecast": An array of exactly 3 objects, representing the forecast for the next three days. Each object must have:
+            - "day": The name of the day (e.g., "Monday", "Tuesday").
+            - "min_temp": The minimum forecasted temperature in Celsius.
+            - "max_temp": The maximum forecasted temperature in Celsius.
+            - "condition": A short string describing the day's forecasted weather.
+    `;
+
+    try {
+        const response: GenerateContentResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        current_temp: { type: Type.NUMBER },
+                        condition: { type: Type.STRING },
+                        humidity: { type: Type.NUMBER },
+                        wind_speed: { type: Type.NUMBER },
+                        agricultural_summary: { type: Type.STRING },
+                        forecast: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    day: { type: Type.STRING },
+                                    min_temp: { type: Type.NUMBER },
+                                    max_temp: { type: Type.NUMBER },
+                                    condition: { type: Type.STRING },
+                                },
+                                required: ['day', 'min_temp', 'max_temp', 'condition'],
+                            },
+                        },
+                    },
+                    required: ['current_temp', 'condition', 'humidity', 'wind_speed', 'agricultural_summary', 'forecast'],
+                },
+            },
+        });
+        const jsonString = response.text;
+        const parsedResponse: WeatherData = JSON.parse(jsonString);
+        return parsedResponse;
+    } catch (error) {
+        console.error("Error getting weather forecast from Gemini:", error);
+        if (error instanceof Error) {
+            throw new Error(`Gemini API Error: ${error.message}`);
+        }
+        throw new Error('An unknown error occurred while communicating with the Gemini API for weather data.');
+    }
 };

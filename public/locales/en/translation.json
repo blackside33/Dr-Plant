@@ -35,5 +35,16 @@
     "deleteSelected": "Delete Selected",
     "downloadSelected": "Download Selected",
     "downloading": "Downloading...",
-    "confirmDelete": "Are you sure you want to delete the selected analyses? This action cannot be undone."
+    "confirmDelete": "Are you sure you want to delete the selected analyses? This action cannot be undone.",
+    "weather": "Weather",
+    "weatherTitle": "Weather Forecast & Agricultural Tips",
+    "currentConditions": "Current Conditions",
+    "forecast": "3-Day Forecast",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "agriculturalTip": "Agricultural Tip",
+    "gettingLocation": "Getting your location...",
+    "weatherErrorTitle": "Could Not Fetch Weather",
+    "weatherErrorBody": "Please ensure location permissions are enabled and try again.",
+    "close": "Close"
 }

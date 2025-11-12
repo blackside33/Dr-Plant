@@ -1,21 +1,24 @@
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AnalysisResultData } from './types';
-import { analyzePlantImage } from './services/geminiService';
+import { AnalysisResultData, WeatherData } from './types';
+import { analyzePlantImage, getWeatherForecast } from './services/geminiService';
 import { ImageInput } from './components/ImageInput';
 import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
-import { LeafIcon } from './components/icons';
+import { LeafIcon, WeatherIcon } from './components/icons';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
+import { WeatherModal } from './components/WeatherModal';
 
 type Theme = 'light' | 'dark';
 
 const Header: React.FC<{ 
   theme: Theme, 
   onThemeChange: (theme: Theme) => void,
-}> = ({ theme, onThemeChange }) => {
+  onWeatherClick: () => void;
+}> = ({ theme, onThemeChange, onWeatherClick }) => {
     const { t } = useTranslation();
     return (
         <header className="bg-white dark:bg-gray-800 shadow-md p-4 mb-8">
@@ -24,8 +27,15 @@ const Header: React.FC<{
               <LeafIcon className="w-8 h-8 text-green-500 dark:text-green-400 me-3" />
               <h1 className="text-2xl font-bold text-gray-800 dark:text-white tracking-wider">{t('headerTitle')}</h1>
             </div>
-            <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="flex items-center space-x-1 md:space-x-2">
               <LanguageSwitcher />
+              <button
+                onClick={onWeatherClick}
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
+                aria-label={t('weather')}
+              >
+                <WeatherIcon className="w-6 h-6" />
+              </button>
               <ThemeSwitcher theme={theme} onThemeChange={onThemeChange} />
             </div>
           </div>
@@ -42,6 +52,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'dark');
+  
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [isWeatherLoading, setIsWeatherLoading] = useState(false);
+  const [weatherError, setWeatherError] = useState<string | null>(null);
+  const [isWeatherModalOpen, setIsWeatherModalOpen] = useState(false);
+
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -173,10 +189,46 @@ function App() {
         }
     }
   }, [t, currentAnalysis]);
+  
+  const handleWeatherClick = () => {
+    setIsWeatherModalOpen(true);
+    setIsWeatherLoading(true);
+    setWeatherError('location'); // special error state for 'getting location' message
+    setWeatherData(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        setWeatherError(null);
+        try {
+          const { latitude, longitude } = position.coords;
+          const data = await getWeatherForecast(latitude, longitude, i18n.language);
+          setWeatherData(data);
+        } catch (err: any) {
+          setWeatherError(err.message || 'An unknown error occurred.');
+        } finally {
+          setIsWeatherLoading(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setWeatherError(error.message);
+        setIsWeatherLoading(false);
+      },
+      { timeout: 10000 }
+    );
+  };
+  
+  const handleCloseWeatherModal = () => {
+      setIsWeatherModalOpen(false);
+      setIsWeatherLoading(false);
+      setWeatherError(null);
+      setWeatherData(null);
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
-      <Header theme={theme} onThemeChange={setTheme} />
+      <Header theme={theme} onThemeChange={setTheme} onWeatherClick={handleWeatherClick} />
       <main className="container mx-auto px-4 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[calc(100vh-120px)]">
           
@@ -209,6 +261,13 @@ function App() {
 
         </div>
       </main>
+      <WeatherModal
+        isOpen={isWeatherModalOpen}
+        onClose={handleCloseWeatherModal}
+        isLoading={isWeatherLoading}
+        error={weatherError}
+        data={weatherData}
+      />
     </div>
   );
 }

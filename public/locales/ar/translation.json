@@ -35,5 +35,16 @@
     "deleteSelected": "حذف المحدد",
     "downloadSelected": "تحميل المحدد",
     "downloading": "جاري التحميل...",
-    "confirmDelete": "هل أنت متأكد من أنك تريد حذف التحليلات المحددة؟ لا يمكن التراجع عن هذا الإجراء."
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف التحليلات المحددة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "weather": "الطقس",
+    "weatherTitle": "النشرة الجوية ونصائح زراعية",
+    "currentConditions": "الظروف الحالية",
+    "forecast": "توقعات لـ 3 أيام",
+    "humidity": "الرطوبة",
+    "windSpeed": "سرعة الرياح",
+    "agriculturalTip": "نصيحة زراعية",
+    "gettingLocation": "جاري تحديد موقعك...",
+    "weatherErrorTitle": "تعذر جلب بيانات الطقس",
+    "weatherErrorBody": "يرجى التأكد من تمكين أذونات الموقع والمحاولة مرة أخرى.",
+    "close": "إغلاق"
 }

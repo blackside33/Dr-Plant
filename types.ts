@@ -24,3 +24,19 @@ export interface AnalysisResultData {
   severityDescription: string;
   language: string;
 }
+
+export interface ForecastDay {
+  day: string;
+  min_temp: number;
+  max_temp: number;
+  condition: string;
+}
+
+export interface WeatherData {
+  current_temp: number;
+  condition: string;
+  humidity: number;
+  wind_speed: number;
+  agricultural_summary: string;
+  forecast: ForecastDay[];
+}
