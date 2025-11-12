@@ -33,10 +33,9 @@ interface AnalysisDisplayProps {
   isLoading: boolean;
   error: string | null;
   imagePreview: string | null;
-  theme: 'light' | 'dark';
 }
 
-export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview, theme }) => {
+export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview }) => {
   const { t } = useTranslation();
   const analysisContentRef = useRef<HTMLDivElement>(null);
 

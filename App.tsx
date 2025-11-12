@@ -9,16 +9,11 @@ import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
 import { LeafIcon, WeatherIcon } from './components/icons';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { WeatherModal } from './components/WeatherModal';
 
-type Theme = 'light' | 'dark';
-
 const Header: React.FC<{ 
-  theme: Theme, 
-  onThemeChange: (theme: Theme) => void,
   onWeatherClick: () => void;
-}> = ({ theme, onThemeChange, onWeatherClick }) => {
+}> = ({ onWeatherClick }) => {
     const { t } = useTranslation();
     return (
         <header className="bg-white dark:bg-gray-800 shadow-md p-4 mb-8">
@@ -36,7 +31,6 @@ const Header: React.FC<{
               >
                 <WeatherIcon className="w-6 h-6" />
               </button>
-              <ThemeSwitcher theme={theme} onThemeChange={onThemeChange} />
             </div>
           </div>
         </header>
@@ -51,7 +45,6 @@ function App() {
   const [currentAnalysis, setCurrentAnalysis] = useState<AnalysisResultData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'dark');
   
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
@@ -61,10 +54,9 @@ function App() {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove(theme === 'dark' ? 'light' : 'dark');
-    root.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    root.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+  }, []);
 
   useEffect(() => {
       document.documentElement.lang = i18n.language;
@@ -228,7 +220,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
-      <Header theme={theme} onThemeChange={setTheme} onWeatherClick={handleWeatherClick} />
+      <Header onWeatherClick={handleWeatherClick} />
       <main className="container mx-auto px-4 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[calc(100vh-120px)]">
           
@@ -251,7 +243,6 @@ function App() {
               isLoading={isLoading} 
               error={error} 
               imagePreview={currentImage?.dataUrl || currentAnalysis?.imageUrl || null}
-              theme={theme}
             />
           </div>
           
