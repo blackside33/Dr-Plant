@@ -1,4 +1,5 @@
 
+
 {
     "headerTitle": "Doctor Plant",
     "headerSubtitle": "Your AI-powered plant care assistant",
@@ -16,8 +17,12 @@
     "welcomeTitle": "Welcome to Doctor Plant",
     "welcomeMessage": "Upload or capture a photo of a plant to get an AI-powered health analysis and treatment suggestions.",
     "analyzingMessage": "AI is thinking...",
+    "verifyingImage": "Verifying Image...",
     "analyzingSubtext": "Analyzing plant health.",
     "analysisFailedTitle": "Analysis Failed",
+    "analysisFailedBody": "Analysis could not be completed. This might be due to a poor quality image (e.g., blurry, bad lighting, incorrect angle) or a network issue. Please try again with a clearer, more focused picture.",
+    "notAPlantError": "The uploaded image does not appear to contain a plant. Please ensure you photograph the plant according to the instructions.",
+    "translationFailedBody": "Failed to translate the analysis. Please check your network connection and try again.",
     "imageReadyTitle": "Image Ready for Analysis",
     "imageReadyMessage": "Click the \"Analyze Plant\" button to begin.",
     "description": "Description",

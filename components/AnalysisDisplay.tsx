@@ -6,13 +6,13 @@ import { AnalysisResultData } from '../types';
 import { LeafIcon, DownloadIcon, JordanianSpinner } from './icons';
 import AnalysisReport from './AnalysisReport';
 
-const Spinner: React.FC = () => {
+const Spinner: React.FC<{ messageKey: string }> = ({ messageKey }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <JordanianSpinner />
-      <p className="text-lg text-[var(--color-secondary)]">{t('analyzingMessage')}</p>
-      <p className="text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('analyzingSubtext')}</p>
+      <p className="text-lg text-[var(--color-secondary)]">{t(messageKey)}</p>
+      {messageKey === 'analyzingMessage' && <p className="text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('analyzingSubtext')}</p>}
     </div>
   );
 };
@@ -33,9 +33,10 @@ interface AnalysisDisplayProps {
   isLoading: boolean;
   error: string | null;
   imagePreview: string | null;
+  loadingMessageKey: string;
 }
 
-export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview }) => {
+export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview, loadingMessageKey }) => {
   const { t } = useTranslation();
   const analysisContentRef = useRef<HTMLDivElement>(null);
 
@@ -108,7 +109,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
   return (
     <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full overflow-y-auto">
       <div className="flex flex-col items-center justify-center h-full">
-        {isLoading && <Spinner />}
+        {isLoading && <Spinner messageKey={loadingMessageKey} />}
         {!isLoading && error && <div className="text-center text-red-500 dark:text-red-400 p-4 bg-red-100 dark:bg-red-900/50 rounded-md">
             <h3 className="font-bold text-lg">{t('analysisFailedTitle')}</h3>
             <p>{error}</p>

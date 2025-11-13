@@ -1,7 +1,9 @@
+
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData, WeatherData, AgriculturalTipsData } from './types';
-import { analyzePlantImage, getWeatherForecast, getAgriculturalTips } from './services/geminiService';
+import { analyzePlantImage, getWeatherForecast, getAgriculturalTips, isImageOfPlant } from './services/geminiService';
 import { ImageInput } from './components/ImageInput';
 import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
@@ -72,6 +74,7 @@ function App() {
   const [currentAnalysis, setCurrentAnalysis] = useState<AnalysisResultData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingMessageKey, setLoadingMessageKey] = useState('analyzingMessage');
   
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
@@ -201,7 +204,8 @@ function App() {
         );
 
       } catch (err: any) {
-        setError(err.message || 'An unknown error occurred during translation.');
+        console.error("Translation failed:", err);
+        setError(t('translationFailedBody'));
       } finally {
         setIsLoading(false);
       }
@@ -220,31 +224,42 @@ function App() {
   const handleAnalyzeClick = async () => {
     if (!currentImage) return;
 
-    const performAnalysis = async () => {
-        setIsLoading(true);
-        setError(null);
-        setCurrentAnalysis(null);
+    setIsLoading(true);
+    setError(null);
+    setCurrentAnalysis(null);
+    setLoadingMessageKey('verifyingImage');
 
-        try {
-            const result = await analyzePlantImage(currentImage.base64, currentImage.mimeType, i18n.language);
-            const newAnalysis: AnalysisResultData = {
-                id: new Date().toISOString(),
-                imageUrl: currentImage.dataUrl,
-                timestamp: new Date().toISOString(),
-                language: i18n.language,
-                ...result,
-            };
-            setCurrentAnalysis(newAnalysis);
-            setAnalyses(prev => [newAnalysis, ...prev]);
-        } catch (err: any) {
-            setError(err.message || 'An unknown error occurred during analysis.');
-        } finally {
-            setIsLoading(false);
-            setCurrentImage(null);
+    try {
+        // Step 1: Verify if the image is a plant
+        const isPlant = await isImageOfPlant(currentImage.base64, currentImage.mimeType);
+        if (!isPlant) {
+            // Custom error to be caught below
+            throw new Error('NOT_A_PLANT');
         }
-    };
-    
-    await performAnalysis();
+
+        // Step 2: Proceed with the full analysis
+        setLoadingMessageKey('analyzingMessage');
+        const result = await analyzePlantImage(currentImage.base64, currentImage.mimeType, i18n.language);
+        const newAnalysis: AnalysisResultData = {
+            id: new Date().toISOString(),
+            imageUrl: currentImage.dataUrl,
+            timestamp: new Date().toISOString(),
+            language: i18n.language,
+            ...result,
+        };
+        setCurrentAnalysis(newAnalysis);
+        setAnalyses(prev => [newAnalysis, ...prev]);
+    } catch (err: any) {
+        console.error("Analysis failed:", err);
+        if (err.message === 'NOT_A_PLANT') {
+            setError(t('notAPlantError'));
+        } else {
+            setError(t('analysisFailedBody'));
+        }
+    } finally {
+        setIsLoading(false);
+        setCurrentImage(null);
+    }
   };
   
   const handleClear = useCallback(() => {
@@ -439,6 +454,7 @@ function App() {
               isLoading={isLoading} 
               error={error} 
               imagePreview={currentImage?.dataUrl || currentAnalysis?.imageUrl || null}
+              loadingMessageKey={loadingMessageKey}
             />
           </div>
           

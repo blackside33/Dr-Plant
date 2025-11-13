@@ -16,6 +16,54 @@ export interface LocationQuery {
     name?: string;
 }
 
+export const isImageOfPlant = async (base64Image: string, mimeType: string): Promise<boolean> => {
+  const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+
+  const prompt = `
+    Analyze the provided image. Your only task is to determine if the main subject of the image is a plant, a part of a plant (like a leaf or flower), or a tree.
+    Respond with a single JSON object containing one key: "isPlant", which should be a boolean value (true if it is a plant/leaf/flower/tree, false otherwise).
+    Do not provide any other text, explanation, or markdown formatting. Just the JSON object.
+  `;
+
+  const imagePart = {
+    inlineData: {
+      mimeType: mimeType,
+      data: base64Image,
+    },
+  };
+  const textPart = {
+    text: prompt
+  };
+
+  try {
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: { parts: [imagePart, textPart] },
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            isPlant: { type: Type.BOOLEAN },
+          },
+          required: ['isPlant'],
+        },
+      },
+    });
+
+    const jsonString = response.text;
+    const parsedResponse: { isPlant: boolean } = JSON.parse(jsonString);
+    return parsedResponse.isPlant;
+  } catch (error) {
+    console.error("Error during image plant verification with Gemini:", error);
+     if (error instanceof Error) {
+        throw new Error(`Gemini API Error during verification: ${error.message}`);
+    }
+    throw new Error('An unknown error occurred during image verification.');
+  }
+};
+
+
 const getPrompt = (language: string): string => {
     const commonInstructions = `
 Your task is to analyze an image of a plant and provide a detailed diagnosis and treatment plan. You are an expert plant pathologist with specialized knowledge of agriculture in Jordan.
