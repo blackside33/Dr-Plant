@@ -45,8 +45,8 @@
     "windSpeed": "Wind Speed",
     "agriculturalTip": "Agricultural Tip",
     "gettingLocation": "Getting your location...",
-    "weatherErrorTitle": "Could Not Fetch Weather",
-    "weatherErrorBody": "Please ensure location permissions are enabled and try again.",
+    "weatherErrorTitle": "Could Not Fetch Information",
+    "weatherErrorBody": "We couldn't get your location. Please enable permissions or enter your city below.",
     "close": "Close",
     "iosInstallTitle": "To install this app:",
     "iosInstallBody": "Tap the 'Share' icon in your browser, then scroll down and tap 'Add to Home Screen'.",
@@ -61,5 +61,7 @@
     "plantName": "Plant",
     "plantingAdvice": "Planting Advice",
     "productivityOutlook": "Productivity Outlook",
-    "tipsErrorTitle": "Could Not Fetch Suggestions"
+    "tipsErrorTitle": "Could Not Fetch Suggestions",
+    "locationInputPlaceholder": "e.g., Amman, Irbid",
+    "searchButton": "Search"
 }

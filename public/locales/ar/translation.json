@@ -45,8 +45,8 @@
     "windSpeed": "سرعة الرياح",
     "agriculturalTip": "نصيحة زراعية",
     "gettingLocation": "جاري تحديد موقعك...",
-    "weatherErrorTitle": "تعذر جلب بيانات الطقس",
-    "weatherErrorBody": "يرجى التأكد من تمكين أذونات الموقع والمحاولة مرة أخرى.",
+    "weatherErrorTitle": "تعذر جلب المعلومات",
+    "weatherErrorBody": "لم نتمكن من تحديد موقعك. يرجى تمكين الأذونات أو إدخال اسم مدينتك أدناه.",
     "close": "إغلاق",
     "iosInstallTitle": "لتثبيت هذا التطبيق:",
     "iosInstallBody": "اضغط على أيقونة 'المشاركة' في متصفحك، ثم مرر لأسفل واضغط على 'إضافة إلى الشاشة الرئيسية'.",
@@ -61,5 +61,7 @@
     "plantName": "النبات",
     "plantingAdvice": "نصائح الزراعة",
     "productivityOutlook": "توقعات الإنتاجية",
-    "tipsErrorTitle": "تعذر جلب المقترحات"
+    "tipsErrorTitle": "تعذر جلب المقترحات",
+    "locationInputPlaceholder": "مثال: عمان، إربد",
+    "searchButton": "بحث"
 }

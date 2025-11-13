@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AgriculturalTipsData } from '../types';
 import { SeedlingIcon } from './icons';
@@ -9,14 +9,16 @@ interface AgriculturalTipsModalProps {
     isLoading: boolean;
     error: string | null;
     data: AgriculturalTipsData | null;
+    onManualSearch: (location: string) => void;
 }
 
 const LoadingSpinner: React.FC = () => (
     <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[var(--color-primary)]"></div>
 );
 
-export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ isOpen, onClose, isLoading, error, data }) => {
+export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ isOpen, onClose, isLoading, error, data, onManualSearch }) => {
     const { t } = useTranslation();
+    const [locationInput, setLocationInput] = useState('');
 
     if (!isOpen) return null;
 
@@ -63,10 +65,25 @@ export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ is
                         </div>
                     )}
 
-                    {!isLoading && error && error !== 'location' && (
-                        <div className="flex flex-col items-center justify-center h-64 text-center bg-red-100 dark:bg-red-900/50 p-4 rounded-lg">
+                    {!isLoading && error && !data && (
+                         <div className="flex flex-col items-center justify-center h-64 text-center bg-red-100 dark:bg-red-900/50 p-4 rounded-lg">
                              <h3 className="font-bold text-lg text-red-600 dark:text-red-300">{t('tipsErrorTitle')}</h3>
-                             <p className="text-red-500 dark:text-red-400">{t('weatherErrorBody')}</p>
+                             <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
+                             <form onSubmit={(e) => { e.preventDefault(); onManualSearch(locationInput); }} className="w-full max-w-sm">
+                                <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                                    <input 
+                                        type="text"
+                                        value={locationInput}
+                                        onChange={(e) => setLocationInput(e.target.value)}
+                                        placeholder={t('locationInputPlaceholder')}
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 focus:ring-[var(--color-secondary)] focus:border-[var(--color-secondary)]"
+                                        aria-label="Location Input"
+                                    />
+                                    <button type="submit" className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors whitespace-nowrap">
+                                        {t('searchButton')}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     )}
                     

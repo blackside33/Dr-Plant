@@ -10,6 +10,12 @@ export interface AnalysisResponse {
   severityDescription: string;
 }
 
+export interface LocationQuery {
+    lat?: number;
+    lon?: number;
+    name?: string;
+}
+
 const getPrompt = (language: string): string => {
     const commonInstructions = `
 Your task is to analyze an image of a plant and provide a detailed diagnosis and treatment plan. You are an expert plant pathologist with specialized knowledge of agriculture in Jordan.
@@ -115,16 +121,21 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
 };
 
 
-export const getWeatherForecast = async (lat: number, lon: number, language: string): Promise<WeatherData> => {
+export const getWeatherForecast = async (location: LocationQuery, language: string): Promise<WeatherData> => {
     const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
 
     const langInstruction = language === 'ar'
         ? "All text values in the JSON response must be in Arabic."
         : "All text values in the JSON response must be in English.";
 
+    const locationString = location.lat && location.lon
+        ? `the location with latitude ${location.lat} and longitude ${location.lon}`
+        : `the city of '${location.name}, Jordan'`;
+
+
     const prompt = `
         You are a helpful meteorological assistant specializing in agricultural advice.
-        Provide a weather forecast for the location with latitude ${lat} and longitude ${lon}.
+        Provide a weather forecast for ${locationString}.
         The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
         ${langInstruction}
 
@@ -186,16 +197,21 @@ export const getWeatherForecast = async (lat: number, lon: number, language: str
 };
 
 
-export const getAgriculturalTips = async (lat: number, lon: number, language: string): Promise<AgriculturalTipsData> => {
+export const getAgriculturalTips = async (location: LocationQuery, language: string): Promise<AgriculturalTipsData> => {
     const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
 
     const langInstruction = language === 'ar'
         ? "All text values in the JSON response must be in Arabic."
         : "All text values in the JSON response must be in English.";
+    
+    const locationString = location.lat && location.lon
+        ? `the provided location (latitude: ${location.lat}, longitude: ${location.lon})`
+        : `the city of '${location.name}, Jordan'`;
+
 
     const prompt = `
         You are an expert agricultural advisor with deep knowledge of Jordanian climate and soil.
-        Based on the provided location (latitude: ${lat}, longitude: ${lon}) and the current date, provide practical planting suggestions.
+        Based on ${locationString} and the current date, provide practical planting suggestions.
         The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
         ${langInstruction}
 

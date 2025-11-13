@@ -279,7 +279,7 @@ function App() {
         setWeatherError(null);
         try {
           const { latitude, longitude } = position.coords;
-          const data = await getWeatherForecast(latitude, longitude, i18n.language);
+          const data = await getWeatherForecast({lat: latitude, lon: longitude}, i18n.language);
           setWeatherData(data);
         } catch (err: any) {
           setWeatherError(err.message || 'An unknown error occurred.');
@@ -289,7 +289,7 @@ function App() {
       },
       (error) => {
         console.error("Geolocation error:", error);
-        setWeatherError(error.message);
+        setWeatherError(t('weatherErrorBody'));
         setIsWeatherLoading(false);
       },
       { timeout: 10000 }
@@ -303,6 +303,21 @@ function App() {
       setWeatherData(null);
   }
 
+  const handleManualWeatherSearch = async (locationName: string) => {
+    if (!locationName.trim()) return;
+    setIsWeatherLoading(true);
+    setWeatherError(null);
+    setWeatherData(null);
+    try {
+        const data = await getWeatherForecast({ name: locationName }, i18n.language);
+        setWeatherData(data);
+    } catch (err: any) {
+        setWeatherError(err.message || t('weatherErrorBody'));
+    } finally {
+        setIsWeatherLoading(false);
+    }
+  };
+
   const handleAgriculturalTipsClick = () => {
     setIsTipsModalOpen(true);
     setIsTipsLoading(true);
@@ -314,7 +329,7 @@ function App() {
         setTipsError(null);
         try {
           const { latitude, longitude } = position.coords;
-          const data = await getAgriculturalTips(latitude, longitude, i18n.language);
+          const data = await getAgriculturalTips({ lat: latitude, lon: longitude }, i18n.language);
           setAgriculturalTips(data);
         } catch (err: any) {
           setTipsError(err.message || 'An unknown error occurred.');
@@ -324,11 +339,26 @@ function App() {
       },
       (error) => {
         console.error("Geolocation error:", error);
-        setTipsError(error.message);
+        setTipsError(t('weatherErrorBody'));
         setIsTipsLoading(false);
       },
       { timeout: 10000 }
     );
+  };
+
+   const handleManualTipsSearch = async (locationName: string) => {
+    if (!locationName.trim()) return;
+    setIsTipsLoading(true);
+    setTipsError(null);
+    setAgriculturalTips(null);
+    try {
+        const data = await getAgriculturalTips({ name: locationName }, i18n.language);
+        setAgriculturalTips(data);
+    } catch (err: any) {
+        setTipsError(err.message || t('weatherErrorBody'));
+    } finally {
+        setIsTipsLoading(false);
+    }
   };
 
   const handleCloseTipsModal = () => {
@@ -409,6 +439,7 @@ function App() {
         isLoading={isWeatherLoading}
         error={weatherError}
         data={weatherData}
+        onManualSearch={handleManualWeatherSearch}
       />
       <AgriculturalTipsModal
         isOpen={isTipsModalOpen}
@@ -416,6 +447,7 @@ function App() {
         isLoading={isTipsLoading}
         error={tipsError}
         data={agriculturalTips}
+        onManualSearch={handleManualTipsSearch}
       />
        <InstallPwaModal
         isOpen={isInstallModalOpen}
