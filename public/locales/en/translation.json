@@ -1,6 +1,7 @@
 
 {
     "headerTitle": "Doctor Plant",
+    "headerSubtitle": "Your AI-powered plant care assistant",
     "uploadTitle": "Upload or Capture an Image",
     "uploadInstructions": "Select a photo of the plant you want to analyze.",
     "uploadButton": "Upload from Device",

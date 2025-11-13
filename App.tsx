@@ -1,5 +1,7 @@
 
 
+
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData, WeatherData } from './types';
@@ -20,12 +22,15 @@ const Header: React.FC<{
         <header className="bg-white dark:bg-gray-800 shadow-md p-4 mb-8">
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center">
-              <LeafIcon className="w-8 h-8 text-green-500 dark:text-green-400 me-3" />
-              <h1 className="text-2xl font-bold text-gray-800 dark:text-white tracking-wider">{t('headerTitle')}</h1>
+              <LeafIcon className="w-8 h-8 text-green-500 dark:text-green-400 me-3 flex-shrink-0" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white tracking-wider">{t('headerTitle')}</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{t('headerSubtitle')}</p>
+              </div>
             </div>
-            <div className="flex items-center space-x-1 md:space-x-2">
-              <LanguageSwitcher />
+            <div className="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
               <InstallPwaButton />
+              <LanguageSwitcher />
               <button
                 onClick={onWeatherClick}
                 className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
