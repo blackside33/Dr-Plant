@@ -53,5 +53,6 @@
     "installModalTitle": "Install Doctor Plant",
     "installModalBody": "For the best experience, add Doctor Plant to your home screen for quick access and offline features.",
     "installButton": "Install",
-    "installLaterButton": "Later"
+    "installLaterButton": "Later",
+    "footerCopyright": "© {{year}} BlackirisJo. All Rights Reserved."
 }

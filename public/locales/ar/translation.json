@@ -53,5 +53,6 @@
     "installModalTitle": "تثبيت طبيب النبات",
     "installModalBody": "للحصول على أفضل تجربة، أضف تطبيق طبيب النبات إلى شاشتك الرئيسية للوصول السريع والميزات التي تعمل بدون إنترنت.",
     "installButton": "تثبيت",
-    "installLaterButton": "لاحقاً"
+    "installLaterButton": "لاحقاً",
+    "footerCopyright": "© {{year}} BlackirisJo. جميع الحقوق محفوظة."
 }

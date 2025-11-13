@@ -10,6 +10,7 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { WeatherModal } from './components/WeatherModal';
 import { InstallPwaModal } from './components/InstallPwaModal';
+import { Footer } from './components/Footer';
 
 // BeforeInstallPromptEvent is not a standard TS type, so we define it.
 interface BeforeInstallPromptEvent extends Event {
@@ -351,6 +352,7 @@ function App() {
 
         </div>
       </main>
+      <Footer />
       <WeatherModal
         isOpen={isWeatherModalOpen}
         onClose={handleCloseWeatherModal}
