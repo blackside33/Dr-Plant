@@ -1,6 +1,19 @@
 import { GoogleGenAI, Type, GenerateContentResponse } from '@google/genai';
 import { Treatment, WeatherData, AgriculturalTipsData } from '../types';
 
+// Helper function to extract JSON from a string that might contain markdown
+const extractJson = (text: string): string => {
+    const trimmedText = text.trim();
+    // Match the JSON block within markdown code fences
+    const jsonMatch = trimmedText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (jsonMatch && jsonMatch[1]) {
+        return jsonMatch[1];
+    }
+    // If no markdown fence, return the trimmed text as is
+    return trimmedText;
+};
+
+
 export interface AnalysisResponse {
   disease: string;
   diseaseClassification: string;
@@ -51,7 +64,7 @@ export const isImageOfPlant = async (base64Image: string, mimeType: string): Pro
       },
     });
 
-    const jsonString = response.text;
+    const jsonString = extractJson(response.text);
     const parsedResponse: { isPlant: boolean } = JSON.parse(jsonString);
     return parsedResponse.isPlant;
   } catch (error) {
@@ -156,7 +169,7 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
       },
     });
 
-    const jsonString = response.text;
+    const jsonString = extractJson(response.text);
     const parsedResponse: AnalysisResponse = JSON.parse(jsonString);
     return parsedResponse;
   } catch (error) {
@@ -232,7 +245,7 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
                 },
             },
         });
-        const jsonString = response.text;
+        const jsonString = extractJson(response.text);
         const parsedResponse: WeatherData = JSON.parse(jsonString);
         return parsedResponse;
     } catch (error) {
@@ -301,7 +314,7 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
             },
         });
 
-        const jsonString = response.text;
+        const jsonString = extractJson(response.text);
         const parsedResponse: AgriculturalTipsData = JSON.parse(jsonString);
         return parsedResponse;
     } catch (error) {
