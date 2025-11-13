@@ -78,35 +78,50 @@ export const isImageOfPlant = async (base64Image: string, mimeType: string): Pro
 
 
 const getPrompt = (language: string): string => {
-    const commonInstructions = `
-Your task is to analyze an image of a plant and provide a detailed diagnosis and treatment plan. You are an expert plant pathologist with specialized knowledge of agriculture in Jordan.
-Based on the provided image, provide the following information in a structured JSON format. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
-
-The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription".
-
-1.  "disease": A string identifying the name of the disease affecting the plant. If the plant is healthy, state that. If you cannot determine the disease, say so.
-2.  "diseaseClassification": A string classifying the disease (e.g., "Fungal", "Bacterial", "Viral", "Insect Pest", "Nutrient Deficiency", "Environmental Stress").
-3.  "description": A string containing a concise but informative description of the disease. Use bullet points (e.g., "- Symptom 1\\n- Cause 1") within the string to list its common symptoms and causes for better readability.
-4.  "treatments": An array of treatment objects. Each object should have a "type" ('Chemical' or 'Biological'), a "description", and an optional "suggestedProducts" array.
-    *   For "description", use a numbered list format (e.g., "1. First step\\n2. Second step") if there are multiple steps.
-    *   For "Chemical" treatments, the "suggestedProducts" array is mandatory. It must contain at least 2-3 objects, each with "name" (specific commercial product name commonly available in the Jordanian market), "scientificName" (the scientific name of the active ingredient), and "activeIngredient" (the product's main active ingredient).
-    *   For "Biological" treatments, describe natural or organic methods. "suggestedProducts" can be omitted or empty.
-5.  "severityLevel": An integer from 1 to 10 (where 1 is low risk and 10 is extremely high risk) assessing the disease severity.
-6.  "severityDescription": A string with a brief justification for the severity score.
-`;
     if (language === 'ar') {
         return `
 مهمتك هي تحليل صورة نبات وتقديم تشخيص وخطة علاج مفصلة. أنت خبير في أمراض النباتات ولديك معرفة متخصصة بالزراعة في الأردن.
+**بشكل حاسم، يجب عليك دائمًا تقديم استجابة JSON صالحة بناءً على المخطط، حتى لو كانت جودة الصورة رديئة أو كان التشخيص غير مؤكد.**
+
 بناءً على الصورة المقدمة، قدم المعلومات التالية بتنسيق JSON منظم. لا تقم بتضمين أي نص أو تفسيرات أو تنسيق markdown خارج بنية JSON.
 
+إذا كانت جودة الصورة منخفضة (على سبيل المثال، ضبابية، إضاءة سيئة)، ابذل قصارى جهدك لتقديم تحليل. إذا لم تتمكن من التأكد، قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription".
+
 يجب أن يحتوي كائن JSON على المفاتيح التالية: "disease" ، "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription". يجب أن تكون جميع القيم النصية باللغة العربية.
-${commonInstructions}
+
+1.  "disease": سلسلة نصية تحدد اسم المرض الذي يصيب النبات. إذا كان النبات يبدو سليمًا، اذكر "نبات سليم". إذا لم تتمكن من تحديد المرض، اذكر "غير محدد".
+2.  "diseaseClassification": سلسلة نصية تصنف المرض (على سبيل المثال، "فطري"، "بكتيري"، "فيروسي"، "آفة حشرية"، "نقص المغذيات"، "إجهاد بيئي"). إذا كان النبات سليمًا، استخدم "سليم". إذا كان المرض غير محدد، استخدم "غير محدد".
+3.  "description": سلسلة نصية تحتوي على وصف موجز ومفيد للمرض. استخدم نقاطًا (على سبيل المثال، "- العرض 1\\n- السبب 1"). إذا كان غير محدد، اشرح السبب (على سبيل المثال، "الصورة ضبابية جدًا للتشخيص الدقيق.").
+4.  "treatments": مصفوفة من كائنات العلاج. يجب أن يحتوي كل كائن على "type" ('كيميائي' أو 'بيولوجي')، و "description"، ومصفوفة "suggestedProducts" اختيارية. إذا كان النبات سليمًا أو المرض غير محدد، قدم نصائح عامة للعناية بالنباتات هنا.
+    *   بالنسبة لـ "description"، استخدم تنسيق قائمة مرقمة (على سبيل المثال، "1. الخطوة الأولى\\n2. الخطوة الثانية").
+    *   بالنسبة للعلاجات "الكيميائية"، تكون مصفوفة "suggestedProducts" إلزامية للأمراض المحددة. يجب أن تحتوي على ما لا يقل عن 2-3 كائنات، لكل منها "name" و "scientificName" و "activeIngredient" للمنتجات المتوفرة في الأردن. يمكن أن تكون هذه المصفوفة فارغة إذا كان المرض غير محدد أو للعلاجات البيولوجية.
+    *   بالنسبة للعلاجات "البيولوجية"، صف الأساليب الطبيعية. يمكن حذف "suggestedProducts" أو تركها فارغة.
+5.  "severityLevel": عدد صحيح من 1 إلى 10. إذا كان سليمًا، استخدم 1. إذا كان غير محدد، قدم درجة محايدة مثل 3 واشرح في الوصف.
+6.  "severityDescription": سلسلة نصية تبرر درجة الخطورة. إذا كان غير محدد، اذكر الثقة المنخفضة بسبب جودة الصورة.
 `;
     }
 
+    // Default to English
     return `
+Your task is to analyze an image of a plant and provide a detailed diagnosis and treatment plan. You are an expert plant pathologist with specialized knowledge of agriculture in Jordan.
+**Crucially, you must always provide a valid JSON response based on the schema, even if the image quality is poor or the diagnosis is uncertain.**
+
+Based on the provided image, provide the following information in a structured JSON format. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
 All text values in the JSON should be in English.
-${commonInstructions}
+
+If the image quality is low (e.g., blurry, bad lighting), do your best to provide an analysis. If you cannot be certain, provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields.
+
+The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription".
+
+1.  "disease": A string identifying the name of the disease affecting the plant. If the plant appears healthy, state "Healthy Plant". If you cannot determine the disease, state "Undetermined".
+2.  "diseaseClassification": A string classifying the disease (e.g., "Fungal", "Bacterial", "Viral", "Insect Pest", "Nutrient Deficiency", "Environmental Stress"). If the plant is healthy, use "Healthy". If the disease is undetermined, use "Undetermined".
+3.  "description": A string containing a concise but informative description of the disease. Use bullet points (e.g., "- Symptom 1\\n- Cause 1") within the string. If undetermined, explain why (e.g., "Image is too blurry for accurate diagnosis.").
+4.  "treatments": An array of treatment objects. Each object should have a "type" ('Chemical' or 'Biological'), a "description", and an optional "suggestedProducts" array. If the plant is healthy or the disease is undetermined, provide general plant care advice here.
+    *   For "description", use a numbered list format (e.g., "1. First step\\n2. Second step").
+    *   For "Chemical" treatments, the "suggestedProducts" array is mandatory for specific diseases. It must contain at least 2-3 objects, each with "name", "scientificName", and "activeIngredient" for products in Jordan. This array can be empty if the disease is undetermined or for biological treatments.
+    *   For "Biological" treatments, describe natural methods. "suggestedProducts" can be omitted or empty.
+5.  "severityLevel": An integer from 1 to 10. If healthy, use 1. If undetermined, provide a neutral score like 3 and explain in the description.
+6.  "severityDescription": A string justifying the severity score. If undetermined, mention the low confidence due to image quality.
 `;
 };
 
