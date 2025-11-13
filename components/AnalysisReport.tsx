@@ -52,6 +52,26 @@ const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ 
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{analysis.severityDescription}</p>
                     </div>
 
+                    {/* Image Quality Card */}
+                    {analysis.imageQualityScore !== undefined && analysis.imageQualityDescription && (
+                        <div className="bg-gray-100/50 dark:bg-black/20 p-6 rounded-lg border border-black/10 dark:border-white/10 pdf-card">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{t('imageQuality')}</h3>
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div
+                                        className={`h-2.5 rounded-full transition-all duration-500 ${
+                                            analysis.imageQualityScore <= 3 ? 'bg-red-600' : analysis.imageQualityScore <= 7 ? 'bg-yellow-500' : 'bg-green-600'
+                                        }`}
+                                        style={{ width: `${analysis.imageQualityScore * 10}%` }}
+                                    ></div>
+                                </div>
+                                <span className="font-bold text-lg text-gray-700 dark:text-gray-300">{analysis.imageQualityScore}/10</span>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{analysis.imageQualityDescription}</p>
+                        </div>
+                    )}
+
+
                     {/* Description Card */}
                     <div className="bg-gray-100/50 dark:bg-black/20 p-6 rounded-lg border border-black/10 dark:border-white/10 pdf-card">
                         <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{t('description')}</h3>

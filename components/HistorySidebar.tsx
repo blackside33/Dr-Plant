@@ -39,8 +39,10 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
   };
 
   const handleDeleteClick = () => {
-    onDeleteSelected(Array.from(selectedIds));
-    setSelectedIds(new Set());
+    if (window.confirm(t('confirmDelete'))) {
+      onDeleteSelected(Array.from(selectedIds));
+      setSelectedIds(new Set());
+    }
   };
 
   const handleDownloadSelected = async () => {

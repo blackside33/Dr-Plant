@@ -21,6 +21,8 @@ export interface AnalysisResponse {
   treatments: Treatment[];
   severityLevel: number;
   severityDescription: string;
+  imageQualityScore: number;
+  imageQualityDescription: string;
 }
 
 export interface LocationQuery {
@@ -87,7 +89,7 @@ const getPrompt = (language: string): string => {
 
 إذا كانت جودة الصورة منخفضة (على سبيل المثال، ضبابية، إضاءة سيئة)، ابذل قصارى جهدك لتقديم تحليل. إذا لم تتمكن من التأكد، قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription".
 
-يجب أن يحتوي كائن JSON على المفاتيح التالية: "disease" ، "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription". يجب أن تكون جميع القيم النصية باللغة العربية.
+يجب أن يحتوي كائن JSON على المفاتيح التالية: "disease" ، "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription"، "imageQualityScore"، "imageQualityDescription". يجب أن تكون جميع القيم النصية باللغة العربية.
 
 1.  "disease": سلسلة نصية تحدد اسم المرض الذي يصيب النبات. إذا كان النبات يبدو سليمًا، اذكر "نبات سليم". إذا لم تتمكن من تحديد المرض، اذكر "غير محدد".
 2.  "diseaseClassification": سلسلة نصية تصنف المرض (على سبيل المثال، "فطري"، "بكتيري"، "فيروسي"، "آفة حشرية"، "نقص المغذيات"، "إجهاد بيئي"). إذا كان النبات سليمًا، استخدم "سليم". إذا كان المرض غير محدد، استخدم "غير محدد".
@@ -98,6 +100,8 @@ const getPrompt = (language: string): string => {
     *   بالنسبة للعلاجات "البيولوجية"، صف الأساليب الطبيعية. يمكن حذف "suggestedProducts" أو تركها فارغة.
 5.  "severityLevel": عدد صحيح من 1 إلى 10. إذا كان سليمًا، استخدم 1. إذا كان غير محدد، قدم درجة محايدة مثل 3 واشرح في الوصف.
 6.  "severityDescription": سلسلة نصية تبرر درجة الخطورة. إذا كان غير محدد، اذكر الثقة المنخفضة بسبب جودة الصورة.
+7.  "imageQualityScore": عدد صحيح من 1 إلى 10 يقيم جودة الصورة (التركيز، الإضاءة، الوضوح). 1 يعني جودة سيئة جداً، 10 يعني جودة ممتازة.
+8.  "imageQualityDescription": سلسلة نصية تبرر درجة جودة الصورة، وتشير إلى كيفية تأثيرها على دقة التحليل.
 `;
     }
 
@@ -111,7 +115,7 @@ All text values in the JSON should be in English.
 
 If the image quality is low (e.g., blurry, bad lighting), do your best to provide an analysis. If you cannot be certain, provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields.
 
-The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription".
+The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription", "imageQualityScore", "imageQualityDescription".
 
 1.  "disease": A string identifying the name of the disease affecting the plant. If the plant appears healthy, state "Healthy Plant". If you cannot determine the disease, state "Undetermined".
 2.  "diseaseClassification": A string classifying the disease (e.g., "Fungal", "Bacterial", "Viral", "Insect Pest", "Nutrient Deficiency", "Environmental Stress"). If the plant is healthy, use "Healthy". If the disease is undetermined, use "Undetermined".
@@ -122,6 +126,8 @@ The JSON object must have the following keys: "disease", "diseaseClassification"
     *   For "Biological" treatments, describe natural methods. "suggestedProducts" can be omitted or empty.
 5.  "severityLevel": An integer from 1 to 10. If healthy, use 1. If undetermined, provide a neutral score like 3 and explain in the description.
 6.  "severityDescription": A string justifying the severity score. If undetermined, mention the low confidence due to image quality.
+7.  "imageQualityScore": An integer from 1 to 10 rating the image quality (focus, lighting, clarity). 1 is very poor, 10 is excellent.
+8.  "imageQualityDescription": A string justifying the image quality score, noting how it might affect the analysis accuracy.
 `;
 };
 
@@ -178,8 +184,10 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
             },
             severityLevel: { type: Type.INTEGER },
             severityDescription: { type: Type.STRING },
+            imageQualityScore: { type: Type.INTEGER },
+            imageQualityDescription: { type: Type.STRING },
           },
-          required: ['disease', 'diseaseClassification', 'description', 'treatments', 'severityLevel', 'severityDescription'],
+          required: ['disease', 'diseaseClassification', 'description', 'treatments', 'severityLevel', 'severityDescription', 'imageQualityScore', 'imageQualityDescription'],
         }
       },
     });

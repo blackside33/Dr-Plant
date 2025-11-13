@@ -23,6 +23,8 @@ export interface AnalysisResultData {
   severityLevel: number;
   severityDescription: string;
   language: string;
+  imageQualityScore: number;
+  imageQualityDescription: string;
 }
 
 export interface ForecastDay {

@@ -78,5 +78,6 @@
     "tipFocus": "Focus on one affected leaf.",
     "tipLight": "Use clear, natural lighting.",
     "tipClarity": "Ensure the image is sharp, not blurry.",
-    "tipBackground": "Use a simple, plain background."
+    "tipBackground": "Use a simple, plain background.",
+    "imageQuality": "Image Quality & Analysis Confidence"
 }

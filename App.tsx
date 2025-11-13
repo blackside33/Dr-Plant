@@ -275,13 +275,11 @@ function App() {
   }, []);
 
   const handleDeleteSelected = useCallback((ids: string[]) => {
-    if (window.confirm(t('confirmDelete'))) {
-        setAnalyses(prev => prev.filter(a => !ids.includes(a.id)));
-        if (currentAnalysis && ids.includes(currentAnalysis.id)) {
-            setCurrentAnalysis(null);
-        }
+    setAnalyses(prev => prev.filter(a => !ids.includes(a.id)));
+    if (currentAnalysis && ids.includes(currentAnalysis.id)) {
+        setCurrentAnalysis(null);
     }
-  }, [t, currentAnalysis]);
+  }, [currentAnalysis]);
   
   const handleWeatherClick = () => {
     setIsWeatherModalOpen(true);
