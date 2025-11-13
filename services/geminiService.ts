@@ -193,14 +193,40 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
     });
 
     const jsonString = extractJson(response.text);
+    if (!jsonString) {
+      throw new Error("Received empty response text from Gemini.");
+    }
     const parsedResponse: AnalysisResponse = JSON.parse(jsonString);
+     if (!parsedResponse || !parsedResponse.disease) {
+      throw new Error("Parsed JSON from Gemini is empty or invalid.");
+    }
     return parsedResponse;
   } catch (error) {
     console.error("Error analyzing image with Gemini:", error);
-    if (error instanceof Error) {
-        throw new Error(`Gemini API Error: ${error.message}`);
+    
+    if (language === 'ar') {
+        return {
+            disease: "فشل التحليل",
+            diseaseClassification: "خطأ",
+            description: "لم نتمكن من تحليل هذه الصورة. قد يكون هذا بسبب مشكلة في الشبكة، أو قد تكون الصورة غير قابلة للتمييز على الإطلاق.",
+            treatments: [],
+            severityLevel: 0,
+            severityDescription: "تعذر التحديد.",
+            imageQualityScore: 1,
+            imageQualityDescription: "فشل التحليل، لذلك لا يمكن تقييم جودة الصورة."
+        };
     }
-    throw new Error('An unknown error occurred while communicating with the Gemini API.');
+
+    return {
+        disease: "Analysis Failed",
+        diseaseClassification: "Error",
+        description: "We were unable to analyze this image. This might be due to a network issue, or the image may be completely unidentifiable.",
+        treatments: [],
+        severityLevel: 0,
+        severityDescription: "Could not be determined.",
+        imageQualityScore: 1,
+        imageQualityDescription: "Analysis failed, so image quality could not be assessed."
+    };
   }
 };
 
