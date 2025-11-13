@@ -87,7 +87,7 @@ const getPrompt = (language: string): string => {
 
 بناءً على الصورة المقدمة، قدم المعلومات التالية بتنسيق JSON منظم. لا تقم بتضمين أي نص أو تفسيرات أو تنسيق markdown خارج بنية JSON.
 
-إذا كانت جودة الصورة منخفضة (على سبيل المثال، ضبابية، إضاءة سيئة)، ابذل قصارى جهدك لتقديم تحليل. إذا لم تتمكن من التأكد، قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription".
+حتى لو كانت جودة الصورة منخفضة جدًا (على سبيل المثال، ضبابية، إضاءة سيئة، خارج نطاق التركيز)، يجب عليك دائمًا محاولة تقديم تحليل. لا ترفض الصورة بسبب الجودة الرديئة. قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription".
 
 يجب أن يحتوي كائن JSON على المفاتيح التالية: "disease" ، "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription"، "imageQualityScore"، "imageQualityDescription". يجب أن تكون جميع القيم النصية باللغة العربية.
 
@@ -113,7 +113,7 @@ Your task is to analyze an image of a plant and provide a detailed diagnosis and
 Based on the provided image, provide the following information in a structured JSON format. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
 All text values in the JSON should be in English.
 
-If the image quality is low (e.g., blurry, bad lighting), do your best to provide an analysis. If you cannot be certain, provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields.
+Even if the image quality is very low (e.g., blurry, bad lighting, out of focus), you must always attempt an analysis. Do not reject the image due to poor quality. Provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields.
 
 The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription", "imageQualityScore", "imageQualityDescription".
 
