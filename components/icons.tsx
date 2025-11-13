@@ -1,10 +1,50 @@
 import React from 'react';
 
-// Replaced the icon with a new Plant in Shield logo
+// Replaced the icon with the new heart/stethoscope/tree logo
 export const LeafIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 4.5c1.38 0 2.5 1.12 2.5 2.5 0 .7-.29 1.33-.76 1.78.6.61 1.26 1.25 1.26 2.22 0 1.66-1.34 3-3 3s-3-1.34-3-3c0-.97.66-1.61 1.26-2.22-.47-.45-.76-1.08-.76-1.78 0-1.38 1.12-2.5 2.5-2.5z" />
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
+        <defs>
+            <clipPath id="heart-clip-path-component">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </clipPath>
+        </defs>
+        <g clipPath="url(#heart-clip-path-component)">
+            <rect x="0" y="0" width="12" height="24" fill="#216841"/>
+            <rect x="12" y="0" width="12" height="24" fill="#304983"/>
+        </g>
+        <g stroke="#000" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+            {/* Stethoscope Top */}
+            <path fill="none" d="M9.5 5 A 2.5 2.5 0 0 1 14.5 5" />
+            <circle cx="9" cy="5" r="0.75" fill="#000"/>
+            <circle cx="15" cy="5" r="0.75" fill="#000"/>
+            <path fill="none" d="M9.5 5 C 10 7, 11 8, 12 8" />
+            <path fill="none" d="M14.5 5 C 14 7, 13 8, 12 8" />
+
+            {/* Tree Trunk and Stethoscope Tube */}
+            <path fill="none" d="M12 8 V 11" />
+            
+            {/* Tree Branches */}
+            <path fill="none" d="M12 11 C 10 10, 8 11, 8 13" />
+            <path fill="none" d="M12 11 C 11 12, 9.5 13.5, 9.5 15.5" />
+            <path fill="none" d="M12 11 C 10.5 11, 8.5 11.5, 7 10" />
+
+            {/* Stethoscope end */}
+            <path fill="none" d="M12 11 C 12 17, 18 16, 18 14" />
+            <circle fill="#000" cx="18" cy="15" r="0.5" />
+            <circle fill="none" cx="18" cy="15" r="2" />
+
+            {/* Leaves */}
+            <g fill="#000" stroke="none">
+                <circle cx="7.5" cy="9.5" r="0.6"/>
+                <circle cx="6.5" cy="10.5" r="0.6"/>
+                <circle cx="8" cy="13.5" r="0.6"/>
+                <circle cx="9" cy="16" r="0.6"/>
+                <circle cx="9" cy="12.5" r="0.6"/>
+                <circle cx="10" cy="14.5" r="0.6"/>
+                <circle cx="11" cy="10" r="0.6"/>
+            </g>
+        </g>
+    </svg>
 );
 
 
@@ -70,7 +110,7 @@ export const WeatherIcon: React.FC<{ className?: string }> = ({ className }) => 
 
 export const InstallIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.25 3.75h5.5a2.25 2.25 0 0 1 2.25 2.25v12a2.25 2.25 0 0 1-2.25 2.25h-5.5a2.25 2.25 0 0 1-2.25-2.25v-12a2.25 2.25 0 0 1 2.25-2.25z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.25 3.75h5.5a2.25 2.25 0 0 1 2.25 2.25v12a2.25 2.25 0 0 1-2.25-2.25h-5.5a2.25 2.25 0 0 1-2.25-2.25v-12a2.25 2.25 0 0 1 2.25-2.25z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 13.5V6.75m0 6.75-2.25-2.25M12 13.5l2.25-2.25" />
   </svg>
 );
