@@ -40,3 +40,14 @@ export interface WeatherData {
   agricultural_summary: string;
   forecast: ForecastDay[];
 }
+
+export interface PlantSuggestion {
+  plantName: string;
+  plantingAdvice: string;
+  productivityOutlook: string;
+}
+
+export interface AgriculturalTipsData {
+  summary: string;
+  suggestions: PlantSuggestion[];
+}

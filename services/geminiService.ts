@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type, GenerateContentResponse } from '@google/genai';
-import { Treatment, WeatherData } from '../types';
+import { Treatment, WeatherData, AgriculturalTipsData } from '../types';
 
 export interface AnalysisResponse {
   disease: string;
@@ -182,5 +182,67 @@ export const getWeatherForecast = async (lat: number, lon: number, language: str
             throw new Error(`Gemini API Error: ${error.message}`);
         }
         throw new Error('An unknown error occurred while communicating with the Gemini API for weather data.');
+    }
+};
+
+
+export const getAgriculturalTips = async (lat: number, lon: number, language: string): Promise<AgriculturalTipsData> => {
+    const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+
+    const langInstruction = language === 'ar'
+        ? "All text values in the JSON response must be in Arabic."
+        : "All text values in the JSON response must be in English.";
+
+    const prompt = `
+        You are an expert agricultural advisor with deep knowledge of Jordanian climate and soil.
+        Based on the provided location (latitude: ${lat}, longitude: ${lon}) and the current date, provide practical planting suggestions.
+        The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
+        ${langInstruction}
+
+        The JSON object must have the following keys:
+        1. "summary": A string providing a general summary of the current planting season and conditions for the region.
+        2. "suggestions": An array of at least 3-4 plant suggestion objects. Each object must have:
+            - "plantName": The name of the suggested plant or crop.
+            - "plantingAdvice": A string with concise, actionable advice for planting this crop now (e.g., soil preparation, timing).
+            - "productivityOutlook": A string describing the expected yield, benefits, or market opportunities for this crop.
+    `;
+
+    try {
+        const response: GenerateContentResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        summary: { type: Type.STRING },
+                        suggestions: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    plantName: { type: Type.STRING },
+                                    plantingAdvice: { type: Type.STRING },
+                                    productivityOutlook: { type: Type.STRING },
+                                },
+                                required: ['plantName', 'plantingAdvice', 'productivityOutlook'],
+                            },
+                        },
+                    },
+                    required: ['summary', 'suggestions'],
+                },
+            },
+        });
+
+        const jsonString = response.text;
+        const parsedResponse: AgriculturalTipsData = JSON.parse(jsonString);
+        return parsedResponse;
+    } catch (error) {
+        console.error("Error getting agricultural tips from Gemini:", error);
+        if (error instanceof Error) {
+            throw new Error(`Gemini API Error: ${error.message}`);
+        }
+        throw new Error('An unknown error occurred while communicating with the Gemini API for agricultural tips.');
     }
 };

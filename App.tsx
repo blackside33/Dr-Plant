@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AnalysisResultData, WeatherData } from './types';
-import { analyzePlantImage, getWeatherForecast } from './services/geminiService';
+import { AnalysisResultData, WeatherData, AgriculturalTipsData } from './types';
+import { analyzePlantImage, getWeatherForecast, getAgriculturalTips } from './services/geminiService';
 import { ImageInput } from './components/ImageInput';
 import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
-import { LeafIcon, WeatherIcon } from './components/icons';
+import { LeafIcon, WeatherIcon, SeedlingIcon } from './components/icons';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { WeatherModal } from './components/WeatherModal';
 import { InstallPwaModal } from './components/InstallPwaModal';
 import { Footer } from './components/Footer';
+import { AgriculturalTipsModal } from './components/AgriculturalTipsModal';
 
 // BeforeInstallPromptEvent is not a standard TS type, so we define it.
 interface BeforeInstallPromptEvent extends Event {
@@ -25,9 +26,10 @@ interface BeforeInstallPromptEvent extends Event {
 
 const Header: React.FC<{ 
   onWeatherClick: () => void;
+  onTipsClick: () => void;
   theme: 'light' | 'dark';
   onThemeChange: (theme: 'light' | 'dark') => void;
-}> = ({ onWeatherClick, theme, onThemeChange }) => {
+}> = ({ onWeatherClick, onTipsClick, theme, onThemeChange }) => {
     const { t } = useTranslation();
     return (
         <header className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] shadow-md p-4 mb-8 border-b-2 border-[var(--color-primary)]">
@@ -49,6 +51,13 @@ const Header: React.FC<{
               >
                 <WeatherIcon className="w-6 h-6" />
               </button>
+               <button
+                onClick={onTipsClick}
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
+                aria-label={t('agriculturalSuggestions')}
+              >
+                <SeedlingIcon className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </header>
@@ -68,6 +77,11 @@ function App() {
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState<string | null>(null);
   const [isWeatherModalOpen, setIsWeatherModalOpen] = useState(false);
+
+  const [agriculturalTips, setAgriculturalTips] = useState<AgriculturalTipsData | null>(null);
+  const [isTipsLoading, setIsTipsLoading] = useState(false);
+  const [tipsError, setTipsError] = useState<string | null>(null);
+  const [isTipsModalOpen, setIsTipsModalOpen] = useState(false);
 
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
@@ -289,6 +303,42 @@ function App() {
       setWeatherData(null);
   }
 
+  const handleAgriculturalTipsClick = () => {
+    setIsTipsModalOpen(true);
+    setIsTipsLoading(true);
+    setTipsError('location');
+    setAgriculturalTips(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        setTipsError(null);
+        try {
+          const { latitude, longitude } = position.coords;
+          const data = await getAgriculturalTips(latitude, longitude, i18n.language);
+          setAgriculturalTips(data);
+        } catch (err: any) {
+          setTipsError(err.message || 'An unknown error occurred.');
+        } finally {
+          setIsTipsLoading(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setTipsError(error.message);
+        setIsTipsLoading(false);
+      },
+      { timeout: 10000 }
+    );
+  };
+
+  const handleCloseTipsModal = () => {
+    setIsTipsModalOpen(false);
+    setIsTipsLoading(false);
+    setTipsError(null);
+    setAgriculturalTips(null);
+  };
+
+
     const handleInstallPwa = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
@@ -320,7 +370,7 @@ function App() {
 
   return (
     <div className={`min-h-screen text-[var(--text-light)] dark:text-[var(--text-dark)] app-container ${getAppBgClass()}`}>
-      <Header onWeatherClick={handleWeatherClick} theme={theme} onThemeChange={setTheme} />
+      <Header onWeatherClick={handleWeatherClick} onTipsClick={handleAgriculturalTipsClick} theme={theme} onThemeChange={setTheme} />
       <main className="container mx-auto px-4 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-120px)]">
           
@@ -359,6 +409,13 @@ function App() {
         isLoading={isWeatherLoading}
         error={weatherError}
         data={weatherData}
+      />
+      <AgriculturalTipsModal
+        isOpen={isTipsModalOpen}
+        onClose={handleCloseTipsModal}
+        isLoading={isTipsLoading}
+        error={tipsError}
+        data={agriculturalTips}
       />
        <InstallPwaModal
         isOpen={isInstallModalOpen}

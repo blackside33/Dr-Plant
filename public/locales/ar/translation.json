@@ -54,5 +54,12 @@
     "installModalBody": "للحصول على أفضل تجربة، أضف تطبيق طبيب النبات إلى شاشتك الرئيسية للوصول السريع والميزات التي تعمل بدون إنترنت.",
     "installButton": "تثبيت",
     "installLaterButton": "لاحقاً",
-    "footerCopyright": "© {{year}} BlackirisJo. جميع الحقوق محفوظة."
+    "footerCopyright": "© {{year}} BlackirisJo. جميع الحقوق محفوظة.",
+    "agriculturalSuggestions": "مقترحات زراعية",
+    "agriculturalTipsTitle": "مقترحات للزراعة",
+    "generalSummary": "ملخص عام",
+    "plantName": "النبات",
+    "plantingAdvice": "نصائح الزراعة",
+    "productivityOutlook": "توقعات الإنتاجية",
+    "tipsErrorTitle": "تعذر جلب المقترحات"
 }

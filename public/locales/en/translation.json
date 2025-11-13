@@ -54,5 +54,12 @@
     "installModalBody": "For the best experience, add Doctor Plant to your home screen for quick access and offline features.",
     "installButton": "Install",
     "installLaterButton": "Later",
-    "footerCopyright": "© {{year}} BlackirisJo. All Rights Reserved."
+    "footerCopyright": "© {{year}} BlackirisJo. All Rights Reserved.",
+    "agriculturalSuggestions": "Agricultural Suggestions",
+    "agriculturalTipsTitle": "Agricultural Planting Suggestions",
+    "generalSummary": "General Summary",
+    "plantName": "Plant",
+    "plantingAdvice": "Planting Advice",
+    "productivityOutlook": "Productivity Outlook",
+    "tipsErrorTitle": "Could Not Fetch Suggestions"
 }
