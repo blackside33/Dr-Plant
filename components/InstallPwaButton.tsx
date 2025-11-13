@@ -72,7 +72,7 @@ export const InstallPwaButton: React.FC = () => {
       <div className="relative" ref={tooltipRef}>
         <button
           onClick={() => setShowIosTooltip(prev => !prev)}
-          className="px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 bg-indigo-600 text-white hover:bg-indigo-700 whitespace-nowrap"
+          className="px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 bg-[var(--color-secondary)] text-white hover:bg-[var(--color-secondary-hover)] whitespace-nowrap"
         >
           {t('installApplication')}
         </button>
@@ -93,7 +93,7 @@ export const InstallPwaButton: React.FC = () => {
   return (
     <button
       onClick={handleInstallClick}
-      className="px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 bg-indigo-600 text-white hover:bg-indigo-700 whitespace-nowrap"
+      className="px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 bg-[var(--color-secondary)] text-white hover:bg-[var(--color-secondary-hover)] whitespace-nowrap"
     >
       {t('installApplication')}
     </button>

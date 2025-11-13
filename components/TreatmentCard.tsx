@@ -8,9 +8,9 @@ export const TreatmentCard: React.FC<{ treatment: Treatment }> = ({ treatment })
     const isChemical = treatment.type.toLowerCase().includes('chem') || treatment.type.includes('كيميائي');
 
     return (
-        <div className="bg-gray-100 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-gray-100/50 dark:bg-black/20 p-6 rounded-lg border border-black/10 dark:border-white/10 pdf-card">
             <div className="flex items-center mb-4">
-                {isChemical ? <FlaskIcon className="w-6 h-6 me-3 text-red-500" /> : <DnaIcon className="w-6 h-6 me-3 text-blue-500" />}
+                {isChemical ? <FlaskIcon className="w-6 h-6 me-3 text-[var(--color-secondary)]" /> : <DnaIcon className="w-6 h-6 me-3 text-[var(--color-primary)]" />}
                 <h4 className="text-xl font-bold text-gray-800 dark:text-gray-100">{isChemical ? t('chemicalTreatment') : t('biologicalTreatment')}</h4>
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2 mb-4 whitespace-pre-wrap leading-relaxed">

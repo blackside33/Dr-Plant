@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
-import AnalysisReport from './AnalysisReport'; // Assuming AnalysisReport is in the same directory
+import AnalysisReport from './AnalysisReport'; 
 import { DownloadIcon } from './icons';
 
 interface HistorySidebarProps {
@@ -46,71 +46,60 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
   const handleDownloadSelected = async () => {
     setIsDownloading(true);
 
-    const container = document.createElement('div');
-    container.style.position = 'fixed';
-    container.style.left = '-9999px';
-    container.style.top = '-9999px';
-    document.body.appendChild(container);
-
     const selectedAnalyses = analyses.filter(a => selectedIds.has(a.id));
 
     for (const analysis of selectedAnalyses) {
-        const reportWrapper = document.createElement('div');
-        // Use a fixed width that matches the on-screen display container for consistent rendering.
-        // The AnalysisReport component has a `max-w-4xl` class, which is 896px.
-        reportWrapper.style.width = '896px';
-        container.appendChild(reportWrapper);
-
-        const root = ReactDOM.createRoot(reportWrapper);
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.left = '-9999px';
+        container.style.top = '-9999px';
+        container.style.width = '896px'; // A reasonable width for rendering
+        document.body.appendChild(container);
+        
+        const root = ReactDOM.createRoot(container);
         root.render(
             <React.StrictMode>
                 <AnalysisReport analysis={analysis} />
             </React.StrictMode>
         );
 
-        // Allow time for rendering
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise(resolve => setTimeout(resolve, 300)); // allow for render
 
-        const canvas = await html2canvas(reportWrapper, {
+        const captureElement = container.firstChild as HTMLElement;
+        captureElement.classList.remove('dark');
+        
+        // Explicitly set light theme styles for PDF generation
+        captureElement.style.backgroundColor = '#FFFFFF';
+        const allElements = captureElement.querySelectorAll('*');
+        allElements.forEach((el) => {
+            (el as HTMLElement).style.color = '#000000';
+        });
+        
+        const imageElement = captureElement.querySelector('img[alt="Analyzed plant"]') as HTMLElement | null;
+        if (imageElement) {
+            imageElement.style.width = '70%';
+            imageElement.style.margin = '0 auto 2rem auto'; 
+        }
+
+        const cards = captureElement.querySelectorAll('.pdf-card');
+        cards.forEach(card => {
+            (card as HTMLElement).style.backgroundColor = '#F9FAFB';
+            (card as HTMLElement).style.border = '1px solid #E5E7EB';
+        });
+
+        const canvas = await html2canvas(captureElement, {
             scale: 2,
             useCORS: true,
             backgroundColor: '#ffffff',
-            onclone: (document) => {
-                 document.documentElement.classList.remove('dark');
-                 document.body.style.backgroundColor = '#ffffff';
-                 
-                 const imageElement = document.querySelector('img[alt="Analyzed plant"]') as HTMLElement | null;
-                 if (imageElement) {
-                     imageElement.style.width = '70%';
-                     imageElement.style.display = 'block';
-                     imageElement.style.margin = '0 auto 2rem auto'; 
-                 }
-     
-                 const style = document.createElement('style');
-                 style.innerHTML = `
-                   .bg-white, .bg-gray-100, .bg-gray-200, .bg-blue-100,
-                   .dark\\:bg-gray-700, .dark\\:bg-gray-800, .dark\\:bg-gray-900, .dark\\:bg-blue-900 {
-                     background-color: #ffffff !important;
-                   }
-                   .border, .border-b, .border-gray-200, .dark\\:border-gray-700 {
-                     border: none !important;
-                   }
-                   * { color: #000000 !important; }
-                   h1, h2, h3, h4, h5, h6 { font-weight: bold !important; }
-                 `;
-                 document.head.appendChild(style);
-            }
         });
-
+        
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
-
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
         const margin = 5;
         const availableWidth = pageWidth - (margin * 2);
         const availableHeight = pageHeight - (margin * 2);
-
         const canvasRatio = canvas.width / canvas.height;
         let pdfImageWidth = availableWidth;
         let pdfImageHeight = pdfImageWidth / canvasRatio;
@@ -127,31 +116,30 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
         pdf.save(`plant-analysis-${analysis.disease.replace(/\s+/g, '-')}.pdf`);
 
         root.unmount();
-        container.removeChild(reportWrapper);
+        document.body.removeChild(container);
     }
 
-    document.body.removeChild(container);
     setIsDownloading(false);
     setSelectedIds(new Set());
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full flex flex-col">
-      <h2 className="text-xl font-bold mb-4 text-green-600 dark:text-green-400">{t('historyTitle')}</h2>
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full flex flex-col">
+      <h2 className="text-xl font-bold mb-4 text-[var(--color-primary)]">{t('historyTitle')}</h2>
       {analyses.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400 flex-grow flex items-center justify-center">{t('noHistory')}</p>
+        <p className="text-gray-600 dark:text-[var(--text-muted-dark)] flex-grow flex items-center justify-center">{t('noHistory')}</p>
       ) : (
-        <div className="flex-grow space-y-3 overflow-y-auto">
+        <div className="flex-grow space-y-3 overflow-y-auto -mr-2 pr-2">
           {analyses.map((analysis) => (
-            <div key={analysis.id} className={`w-full text-left p-3 rounded-md transition-colors flex items-center space-x-3 rtl:space-x-reverse ${currentAnalysisId === analysis.id ? 'bg-green-100 dark:bg-green-800' : 'bg-gray-100 dark:bg-gray-700'}`}>
+            <div key={analysis.id} className={`w-full text-left p-2 rounded-md transition-colors flex items-center space-x-3 rtl:space-x-reverse ${currentAnalysisId === analysis.id ? 'bg-[var(--color-primary)]/10' : 'bg-gray-500/10'}`}>
                 <input 
                     type="checkbox"
-                    className="form-checkbox h-5 w-5 text-green-600 bg-gray-200 dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-green-500"
+                    className="form-checkbox flex-shrink-0 h-5 w-5 text-[var(--color-secondary)] bg-gray-200 dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-[var(--color-secondary)]"
                     checked={selectedIds.has(analysis.id)}
                     onChange={() => handleToggleSelect(analysis.id)}
                     aria-label={`Select analysis for ${analysis.disease}`}
                 />
-                <button onClick={() => onSelect(analysis)} className="flex-grow flex items-center space-x-4 rtl:space-x-reverse">
+                <button onClick={() => onSelect(analysis)} className="flex-grow flex items-center space-x-4 rtl:space-x-reverse min-w-0">
                     <img src={analysis.imageUrl} alt={analysis.disease} className="w-16 h-16 object-cover rounded-md flex-shrink-0" />
                     <div className="overflow-hidden">
                         <div className="flex items-center gap-2">
@@ -168,11 +156,11 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
         </div>
       )}
       {analyses.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+        <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
             <button
                 onClick={handleDownloadSelected}
                 disabled={selectedIds.size === 0 || isDownloading}
-                className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
                 {isDownloading ? (
                     <>

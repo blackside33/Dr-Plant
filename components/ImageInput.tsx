@@ -55,11 +55,11 @@ const CameraModal: React.FC<{ onClose: () => void; onCapture: (dataUrl: string) 
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-3xl w-full">
+            <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-lg p-4 max-w-3xl w-full">
                 <video ref={videoRef} autoPlay playsInline className="w-full rounded-md mb-4"></video>
                 <div className="flex justify-between">
                     <button onClick={onClose} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">{t('cancel')}</button>
-                    <button onClick={handleCapture} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">{t('snapPhoto')}</button>
+                    <button onClick={handleCapture} className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">{t('snapPhoto')}</button>
                 </div>
                 <canvas ref={canvasRef} className="hidden"></canvas>
             </div>
@@ -94,18 +94,18 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelect, onClear, 
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full flex flex-col justify-between">
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full flex flex-col justify-between">
         <div>
-            <h2 className="text-xl font-bold mb-4 text-green-600 dark:text-green-400">{t('uploadTitle')}</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('uploadInstructions')}</p>
+            <h2 className="text-xl font-bold mb-4 text-[var(--color-primary)]">{t('uploadTitle')}</h2>
+            <p className="text-gray-600 dark:text-[var(--text-muted-dark)] mb-6">{t('uploadInstructions')}</p>
             <div className="space-y-4">
-                 <button onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                 <button onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">
                     <UploadIcon className="w-6 h-6 me-2" />
                     {t('uploadButton')}
                 </button>
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-                <button onClick={() => setShowCamera(true)} className="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                <button onClick={() => setShowCamera(true)} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">
                     <CameraIcon className="w-6 h-6 me-2" />
                     {t('cameraButton')}
                 </button>
@@ -116,7 +116,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelect, onClear, 
         <button
             onClick={onAnalyze}
             disabled={!hasImage || isLoading}
-            className="w-full text-lg font-semibold px-4 py-4 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed transform hover:scale-105 disabled:transform-none"
+            className="w-full text-lg font-semibold px-4 py-4 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed transform hover:scale-105 disabled:transform-none"
         >
             {isLoading ? t('analyzingButton') : t('analyzeButton')}
         </button>

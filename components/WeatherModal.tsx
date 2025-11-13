@@ -12,7 +12,7 @@ interface WeatherModalProps {
 }
 
 const LoadingSpinner: React.FC = () => (
-    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[var(--color-primary)]"></div>
 );
 
 export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isLoading, error, data }) => {
@@ -29,7 +29,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
             aria-labelledby="weather-modal-title"
         >
             <div 
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg text-gray-800 dark:text-gray-100 transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale"
+                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-lg text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border-2 border-[var(--color-primary)]"
                 onClick={(e) => e.stopPropagation()}
                 style={{ animation: 'fade-in-scale 0.3s forwards' }}
             >
@@ -41,7 +41,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                 `}</style>
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 id="weather-modal-title" className="text-2xl font-bold text-blue-600 dark:text-blue-400">{t('weatherTitle')}</h2>
+                        <h2 id="weather-modal-title" className="text-2xl font-bold text-[var(--color-primary)]">{t('weatherTitle')}</h2>
                         <button 
                             onClick={onClose} 
                             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
@@ -70,7 +70,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                             {/* Current Conditions */}
                             <div>
                                 <h3 className="text-lg font-semibold mb-2">{t('currentConditions')}</h3>
-                                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg flex justify-between items-center">
+                                <div className="bg-gray-500/10 p-4 rounded-lg flex justify-between items-center">
                                     <div>
                                         <p className="text-5xl font-bold">{Math.round(data.current_temp)}°C</p>
                                         <p className="text-gray-600 dark:text-gray-300">{data.condition}</p>
@@ -85,10 +85,10 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                              {/* Agricultural Tip */}
                              <div>
                                 <h3 className="text-lg font-semibold mb-2 flex items-center">
-                                    <LeafIcon className="w-5 h-5 me-2 text-green-500" />
+                                    <LeafIcon className="w-5 h-5 me-2 text-[var(--color-secondary)]" />
                                     {t('agriculturalTip')}
                                 </h3>
-                                <div className="bg-green-50 dark:bg-green-900/50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                                <div className="bg-green-50 dark:bg-green-900/50 border-l-4 border-[var(--color-secondary)] p-4 rounded-r-lg">
                                     <p className="text-sm text-green-800 dark:text-green-200">{data.agricultural_summary}</p>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                                 <h3 className="text-lg font-semibold mb-2">{t('forecast')}</h3>
                                 <div className="grid grid-cols-3 gap-3">
                                     {data.forecast.map((day, index) => (
-                                        <div key={index} className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                        <div key={index} className="bg-gray-500/10 p-3 rounded-lg text-center">
                                             <p className="font-bold">{day.day}</p>
                                             <p className="text-lg">{Math.round(day.max_temp)}° / {Math.round(day.min_temp)}°</p>
                                             <p className="text-xs text-gray-500 dark:text-gray-400">{day.condition}</p>

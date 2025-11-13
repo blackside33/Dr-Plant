@@ -48,7 +48,10 @@
     "weatherErrorTitle": "Could Not Fetch Weather",
     "weatherErrorBody": "Please ensure location permissions are enabled and try again.",
     "close": "Close",
-    "installApplication": "Install Application",
     "iosInstallTitle": "To install this app:",
-    "iosInstallBody": "Tap the 'Share' icon in your browser, then scroll down and tap 'Add to Home Screen'."
+    "iosInstallBody": "Tap the 'Share' icon in your browser, then scroll down and tap 'Add to Home Screen'.",
+    "installModalTitle": "Install Doctor Plant",
+    "installModalBody": "For the best experience, add Doctor Plant to your home screen for quick access and offline features.",
+    "installButton": "Install",
+    "installLaterButton": "Later"
 }

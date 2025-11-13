@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData, WeatherData } from './types';
@@ -11,29 +7,43 @@ import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
 import { LeafIcon, WeatherIcon } from './components/icons';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { WeatherModal } from './components/WeatherModal';
-import { InstallPwaButton } from './components/InstallPwaButton';
+import { InstallPwaModal } from './components/InstallPwaModal';
+
+// BeforeInstallPromptEvent is not a standard TS type, so we define it.
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 
 const Header: React.FC<{ 
   onWeatherClick: () => void;
-}> = ({ onWeatherClick }) => {
+  theme: 'light' | 'dark';
+  onThemeChange: (theme: 'light' | 'dark') => void;
+}> = ({ onWeatherClick, theme, onThemeChange }) => {
     const { t } = useTranslation();
     return (
-        <header className="bg-white dark:bg-gray-800 shadow-md p-4 mb-8">
+        <header className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] shadow-md p-4 mb-8 border-b-2 border-[var(--color-primary)]">
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center">
-              <LeafIcon className="w-8 h-8 text-green-500 dark:text-green-400 me-3 flex-shrink-0" />
+              <LeafIcon className="w-10 h-10 text-[var(--color-secondary)] me-3 flex-shrink-0" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white tracking-wider">{t('headerTitle')}</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('headerSubtitle')}</p>
+                <h1 className="text-2xl font-bold text-[var(--color-primary)] tracking-wider">{t('headerTitle')}</h1>
+                <p className="text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('headerSubtitle')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-              <InstallPwaButton />
               <LanguageSwitcher />
+              <ThemeSwitcher theme={theme} onThemeChange={onThemeChange} />
               <button
                 onClick={onWeatherClick}
-                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
                 aria-label={t('weather')}
               >
                 <WeatherIcon className="w-6 h-6" />
@@ -58,12 +68,27 @@ function App() {
   const [weatherError, setWeatherError] = useState<string | null>(null);
   const [isWeatherModalOpen, setIsWeatherModalOpen] = useState(false);
 
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedTheme = window.localStorage.getItem('theme') as 'light' | 'dark';
+      if (storedTheme) return storedTheme;
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    }
+    return 'dark'; // Default to dark as per new design
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  }, []);
+    root.classList.remove(theme === 'dark' ? 'light' : 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
 
   useEffect(() => {
       document.documentElement.lang = i18n.language;
@@ -88,6 +113,45 @@ function App() {
       console.error("Failed to save analyses to localStorage", e);
     }
   }, [analyses]);
+  
+  const isIos = useCallback(() => {
+    if (typeof window === 'undefined') return false;
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+  }, []);
+
+  const isInStandaloneMode = useCallback(() => {
+      if (typeof window === 'undefined') return false;
+      return ('standalone' in window.navigator) && ((window.navigator as any).standalone === true)
+  }, []);
+
+
+  // This effect handles the PWA installation prompt
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      if (!isInStandaloneMode()) {
+        setDeferredPrompt(e as BeforeInstallPromptEvent);
+        setIsInstallModalOpen(true);
+      }
+    };
+
+    const isIosDevice = isIos();
+    const hasDismissedIosPrompt = localStorage.getItem('iosInstallDismissed');
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    if (isIosDevice && !isInStandaloneMode() && !hasDismissedIosPrompt) {
+      setTimeout(() => {
+        setIsInstallModalOpen(true);
+      }, 5000); 
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, [isIos, isInStandaloneMode]);
+
 
   // This effect handles re-analyzing an existing analysis to translate it
   useEffect(() => {
@@ -224,12 +288,40 @@ function App() {
       setWeatherData(null);
   }
 
+    const handleInstallPwa = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    setDeferredPrompt(null);
+    setIsInstallModalOpen(false);
+  };
+
+  const handleCloseInstallModal = () => {
+    if (isIos() && !isInStandaloneMode()) {
+      localStorage.setItem('iosInstallDismissed', 'true');
+    }
+    setIsInstallModalOpen(false);
+  };
+
+  const getAppBgClass = useCallback(() => {
+    if (isLoading) {
+      return 'bg-app-loading';
+    }
+    if (currentAnalysis) {
+      const level = currentAnalysis.severityLevel;
+      if (level <= 3) return 'bg-app-healthy';
+      if (level <= 7) return 'bg-app-medium';
+      return 'bg-app-high';
+    }
+    return 'bg-app-default';
+  }, [isLoading, currentAnalysis]);
+
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
-      <Header onWeatherClick={handleWeatherClick} />
+    <div className={`min-h-screen text-[var(--text-light)] dark:text-[var(--text-dark)] app-container ${getAppBgClass()}`}>
+      <Header onWeatherClick={handleWeatherClick} theme={theme} onThemeChange={setTheme} />
       <main className="container mx-auto px-4 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[calc(100vh-120px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-120px)]">
           
           <div className="lg:col-span-1 flex flex-col gap-8">
             <ImageInput 
@@ -265,6 +357,12 @@ function App() {
         isLoading={isWeatherLoading}
         error={weatherError}
         data={weatherData}
+      />
+       <InstallPwaModal
+        isOpen={isInstallModalOpen}
+        onClose={handleCloseInstallModal}
+        onInstall={handleInstallPwa}
+        isIos={isIos()}
       />
     </div>
   );

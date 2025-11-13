@@ -1,12 +1,22 @@
-
-
 import React from 'react';
 
+// Replaced the icon with a new Plant in Shield logo
 export const LeafIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 4.5c1.38 0 2.5 1.12 2.5 2.5 0 .7-.29 1.33-.76 1.78.6.61 1.26 1.25 1.26 2.22 0 1.66-1.34 3-3 3s-3-1.34-3-3c0-.97.66-1.61 1.26-2.22-.47-.45-.76-1.08-.76-1.78 0-1.38 1.12-2.5 2.5-2.5z" />
   </svg>
 );
+
+
+export const JordanianSpinner: React.FC = () => (
+  <div className="relative w-16 h-16">
+    <div className="absolute inset-0 border-4 border-gray-200 dark:border-[var(--card-bg-dark)] rounded-full"></div>
+    <div className="absolute inset-0 border-4 border-t-[var(--color-primary)] border-l-[var(--color-primary)] border-b-transparent border-r-transparent rounded-full animate-spin"></div>
+    <div className="absolute inset-2 border-2 border-gray-200 dark:border-[var(--card-bg-dark)] rounded-full"></div>
+    <div className="absolute inset-2 border-2 border-t-[var(--color-secondary)] border-l-transparent border-b-transparent border-r-[var(--color-secondary)] rounded-full animate-spin [animation-direction:reverse]"></div>
+  </div>
+);
+
 
 export const CameraIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,4 +66,11 @@ export const WeatherIcon: React.FC<{ className?: string }> = ({ className }) => 
     <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
     </svg>
+);
+
+export const InstallIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.25 3.75h5.5a2.25 2.25 0 0 1 2.25 2.25v12a2.25 2.25 0 0 1-2.25 2.25h-5.5a2.25 2.25 0 0 1-2.25-2.25v-12a2.25 2.25 0 0 1 2.25-2.25z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 13.5V6.75m0 6.75-2.25-2.25M12 13.5l2.25-2.25" />
+  </svg>
 );

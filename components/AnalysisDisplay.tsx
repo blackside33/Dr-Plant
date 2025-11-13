@@ -3,16 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
-import { LeafIcon, DownloadIcon } from './icons';
+import { LeafIcon, DownloadIcon, JordanianSpinner } from './icons';
 import AnalysisReport from './AnalysisReport';
 
 const Spinner: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
-      <p className="text-lg text-green-600 dark:text-green-300">{t('analyzingMessage')}</p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">{t('analyzingSubtext')}</p>
+      <JordanianSpinner />
+      <p className="text-lg text-[var(--color-secondary)]">{t('analyzingMessage')}</p>
+      <p className="text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('analyzingSubtext')}</p>
     </div>
   );
 };
@@ -21,9 +21,9 @@ const WelcomeMessage: React.FC = () => {
     const { t } = useTranslation();
     return (
         <div className="text-center p-8 flex flex-col items-center justify-center h-full">
-            <LeafIcon className="w-24 h-24 text-green-500 mb-6 opacity-80" />
-            <h2 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">{t('welcomeTitle')}</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-md">{t('welcomeMessage')}</p>
+            <LeafIcon className="w-24 h-24 text-[var(--color-secondary)] mb-6 opacity-80" />
+            <h2 className="text-3xl font-bold text-[var(--color-primary)] mb-2">{t('welcomeTitle')}</h2>
+            <p className="text-gray-600 dark:text-[var(--text-muted-dark)] max-w-md">{t('welcomeMessage')}</p>
         </div>
     );
 };
@@ -43,47 +43,38 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
     const contentToCapture = analysisContentRef.current;
     if (!contentToCapture || !analysis) return;
 
-    const canvas = await html2canvas(contentToCapture, {
+    // Use a clone to avoid modifying the on-screen element
+    const captureElement = contentToCapture.cloneNode(true) as HTMLElement;
+    captureElement.classList.remove('dark');
+    document.body.appendChild(captureElement);
+    
+    // Explicitly set light theme styles for PDF generation
+    captureElement.style.backgroundColor = '#FFFFFF';
+    const allElements = captureElement.querySelectorAll('*');
+    allElements.forEach((el) => {
+        (el as HTMLElement).style.color = '#000000';
+    });
+    
+    const imageElement = captureElement.querySelector('img[alt="Analyzed plant"]') as HTMLElement | null;
+    if (imageElement) {
+        imageElement.style.width = '70%';
+        imageElement.style.margin = '0 auto 2rem auto'; 
+    }
+
+    const cards = captureElement.querySelectorAll('.pdf-card');
+    cards.forEach(card => {
+        (card as HTMLElement).style.backgroundColor = '#F9FAFB'; // A light gray for cards
+        (card as HTMLElement).style.border = '1px solid #E5E7EB';
+    });
+
+
+    const canvas = await html2canvas(captureElement, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
-        onclone: (document) => {
-            document.documentElement.classList.remove('dark');
-            document.body.style.backgroundColor = '#ffffff';
-            
-            const imageElement = document.querySelector('img[alt="Analyzed plant"]') as HTMLElement | null;
-            if (imageElement) {
-                imageElement.style.width = '70%';
-                imageElement.style.display = 'block';
-                imageElement.style.margin = '0 auto 2rem auto'; 
-            }
-
-            const style = document.createElement('style');
-            style.innerHTML = `
-              /* Force white background on elements that have dark/gray backgrounds in the UI */
-              .bg-white, .bg-gray-100, .bg-gray-200, .bg-blue-100,
-              .dark\\:bg-gray-700, .dark\\:bg-gray-800, .dark\\:bg-gray-900, .dark\\:bg-blue-900 {
-                background-color: #ffffff !important;
-              }
-              
-              /* Remove all borders for a cleaner look */
-              .border, .border-b, .border-gray-200, .dark\\:border-gray-700 {
-                border: none !important;
-              }
-
-              /* Force all text to be black for readability */
-              * {
-                 color: #000000 !important;
-              }
-
-              /* Ensure headings are bold for emphasis */
-              h1, h2, h3, h4, h5, h6 {
-                  font-weight: bold !important;
-              }
-            `;
-            document.head.appendChild(style);
-        }
     });
+    
+    document.body.removeChild(captureElement); // Clean up the cloned element
     
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -106,7 +97,6 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
         pdfImageWidth = pdfImageHeight * canvasRatio;
     }
     
-    // Calculate coordinates to center the image on the page
     const x = (pageWidth - pdfImageWidth) / 2;
     const y = (pageHeight - pdfImageHeight) / 2;
 
@@ -116,7 +106,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
   };
   
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full overflow-y-auto">
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full overflow-y-auto">
       <div className="flex flex-col items-center justify-center h-full">
         {isLoading && <Spinner />}
         {!isLoading && error && <div className="text-center text-red-500 dark:text-red-400 p-4 bg-red-100 dark:bg-red-900/50 rounded-md">
@@ -127,9 +117,9 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
         
         {imagePreview && !analysis && !isLoading && !error && (
              <div className="text-center">
-                <h2 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-4">{t('imageReadyTitle')}</h2>
+                <h2 className="text-2xl font-bold text-[var(--color-primary)] mb-4">{t('imageReadyTitle')}</h2>
                 <img src={imagePreview} alt="Plant preview" className="max-h-[60vh] rounded-lg mx-auto shadow-lg" />
-                <p className="mt-4 text-gray-600 dark:text-gray-400">{t('imageReadyMessage')}</p>
+                <p className="mt-4 text-gray-600 dark:text-[var(--text-muted-dark)]">{t('imageReadyMessage')}</p>
             </div>
         )}
 
@@ -139,7 +129,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
             <div className="mt-6 text-center">
               <button
                 onClick={handleDownloadPdf}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 <DownloadIcon className="w-5 h-5 me-2" />
                 {t('downloadPDF')}

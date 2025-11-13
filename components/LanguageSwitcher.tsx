@@ -9,17 +9,17 @@ export const LanguageSwitcher: React.FC = () => {
     };
 
     const languages = [
-        { code: 'en', name: 'English' },
-        { code: 'ar', name: 'العربية' },
+        { code: 'en', name: 'EN' },
+        { code: 'ar', name: 'ع' },
     ];
 
     return (
-        <div className="flex space-x-2 bg-gray-200 dark:bg-gray-700 rounded-full p-1">
+        <div className="flex space-x-1 bg-black/10 dark:bg-white/10 rounded-full p-1">
             {languages.map(lang => (
                 <button
                     key={lang.code}
                     onClick={() => changeLanguage(lang.code as 'en' | 'ar')}
-                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 ${i18n.language === lang.code ? 'bg-green-600 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
+                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 ${i18n.language === lang.code ? 'bg-[var(--color-primary)] text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10'}`}
                 >
                     {lang.name}
                 </button>

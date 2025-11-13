@@ -7,21 +7,118 @@
     <title>طبيب النبات</title>
 
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#1f2937" />
+    <meta name="theme-color" content="#363636" />
     <link rel="apple-touch-icon" href="/icon.svg" />
 
     <!-- iOS specific PWA tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="طبيب النبات" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      :root {
+        --font-sans: 'Inter', sans-serif;
+        --font-arabic: 'Cairo', sans-serif;
+        
+        --color-primary: #A5C882; /* Light Green */
+        --color-primary-hover: #8EAE6E;
+        --color-secondary: #D9822B; /* Brownish Orange */
+        --color-secondary-hover: #B46D24;
+
+        --bg-light: #F8F9FA; /* Softer light bg */
+        --bg-dark: #4A4A4A; /* Dark Grey bg */
+        
+        --card-bg-light: #FFFFFF;
+        --card-bg-dark: #363636; /* Darker grey for cards */
+
+        --text-light: #212121;
+        --text-dark: #E0E0E0;
+        --text-muted-light: #6b7280;
+        --text-muted-dark: #a0aec0;
+
+        /* New Jordanian-inspired pattern background */
+        --pattern-light: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2.5L11.25 7.5L16.25 8.75L11.25 10L10 15L8.75 10L3.75 8.75L8.75 7.5Z' stroke-width='0.5' stroke='rgba(0,0,0,0.06)' fill='none'/%3e%3c/svg%3e");
+        --pattern-dark: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2.5L11.25 7.5L16.25 8.75L11.25 10L10 15L8.75 10L3.75 8.75L8.75 7.5Z' stroke-width='0.5' stroke='rgba(255,255,255,0.06)' fill='none'/%3e%3c/svg%3e");
+      }
+      
+      html[lang="ar"] body {
+        font-family: var(--font-arabic);
+      }
+      
+      html:not([lang="ar"]) body {
+        font-family: var(--font-sans);
+      }
+      
       body {
-        font-family: 'Arial', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+      
+      .app-container {
+        transition: background-color 0.5s ease-in-out;
+        background-image: var(--pattern-light);
+        background-size: 28px 28px;
+        animation: pan-bg 120s linear infinite;
+      }
+      
+      .dark .app-container {
+        background-image: var(--pattern-dark);
+      }
+
+      @keyframes pan-bg {
+        0% { background-position: 0 0; }
+        100% { background-position: -280px -280px; }
+      }
+      
+      .bg-app-default {
+          background-color: var(--bg-light);
+      }
+      .dark .bg-app-default {
+          background-color: var(--bg-dark);
+      }
+
+      .bg-app-healthy {
+          background-color: #F0FDF4; /* Very pale green */
+      }
+      .dark .bg-app-healthy {
+          background-color: hsl(125, 40%, 20%);
+      }
+      
+      .bg-app-medium {
+          background-color: #FEFCE8; /* Very pale yellow */
+      }
+      .dark .bg-app-medium {
+          background-color: hsl(50, 40%, 20%);
+      }
+      
+      .bg-app-high {
+          background-color: #FEF2F2; /* Very pale red */
+      }
+      .dark .bg-app-high {
+          background-color: hsl(10, 40%, 20%);
+      }
+
+      @keyframes pulse-bg-light {
+          0%, 100% { background-color: var(--bg-light); }
+          50% { background-color: #EFF0F1; } /* Subtle pulse */
+      }
+      @keyframes pulse-bg-dark {
+          0%, 100% { background-color: var(--bg-dark); }
+          50% { background-color: #555555; }
+      }
+      
+      .bg-app-loading {
+          animation: pulse-bg-light 2s infinite ease-in-out;
+      }
+      .dark .bg-app-loading {
+          animation-name: pulse-bg-dark;
+      }
+
     </style>
   <script type="importmap">
 {
