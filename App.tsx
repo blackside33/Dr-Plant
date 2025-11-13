@@ -287,9 +287,17 @@ function App() {
           setIsWeatherLoading(false);
         }
       },
-      (error) => {
-        console.error("Geolocation error:", error);
-        setWeatherError(t('weatherErrorBody'));
+      (error: GeolocationPositionError) => {
+        console.error(`Geolocation error: Code ${error.code} - ${error.message}`);
+        let errorMessage = t('weatherErrorBody');
+        if (error.code === 1) { // PERMISSION_DENIED
+            errorMessage = t('geolocationPermissionDenied');
+        } else if (error.code === 2) { // POSITION_UNAVAILABLE
+            errorMessage = t('geolocationPositionUnavailable');
+        } else if (error.code === 3) { // TIMEOUT
+            errorMessage = t('geolocationTimeout');
+        }
+        setWeatherError(errorMessage);
         setIsWeatherLoading(false);
       },
       { timeout: 10000 }
@@ -337,9 +345,17 @@ function App() {
           setIsTipsLoading(false);
         }
       },
-      (error) => {
-        console.error("Geolocation error:", error);
-        setTipsError(t('weatherErrorBody'));
+      (error: GeolocationPositionError) => {
+        console.error(`Geolocation error: Code ${error.code} - ${error.message}`);
+        let errorMessage = t('weatherErrorBody');
+        if (error.code === 1) { // PERMISSION_DENIED
+            errorMessage = t('geolocationPermissionDenied');
+        } else if (error.code === 2) { // POSITION_UNAVAILABLE
+            errorMessage = t('geolocationPositionUnavailable');
+        } else if (error.code === 3) { // TIMEOUT
+            errorMessage = t('geolocationTimeout');
+        }
+        setTipsError(errorMessage);
         setIsTipsLoading(false);
       },
       { timeout: 10000 }
