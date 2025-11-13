@@ -87,7 +87,7 @@ const getPrompt = (language: string): string => {
 
 بناءً على الصورة المقدمة، قدم المعلومات التالية بتنسيق JSON منظم. لا تقم بتضمين أي نص أو تفسيرات أو تنسيق markdown خارج بنية JSON.
 
-حتى لو كانت جودة الصورة منخفضة جدًا (على سبيل المثال، ضبابية، إضاءة سيئة، خارج نطاق التركيز)، يجب عليك دائمًا محاولة تقديم تحليل. لا ترفض الصورة بسبب الجودة الرديئة. قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription".
+حتى لو كانت جودة الصورة منخفضة جدًا (على سبيل المثال، ضبابية، إضاءة سيئة، خارج نطاق التركيز)، يجب عليك دائمًا محاولة تقديم تحليل. لا ترفض الصورة بسبب الجودة الرديئة. قدم تشخيصك الأكثر ترجيحًا واذكر بوضوح أن ثقتك منخفضة بسبب جودة الصورة في حقلي "description" أو "severityDescription". إذا كانت الصورة سيئة لدرجة أنه من المستحيل تمامًا تحديد أي شيء، فاملأ حقول JSON بقيم مثل "غير محدد" و "جودة صورة رديئة للغاية" مع الحفاظ على بنية JSON الصالحة دائمًا.
 
 يجب أن يحتوي كائن JSON على المفاتيح التالية: "disease" ، "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription"، "imageQualityScore"، "imageQualityDescription". يجب أن تكون جميع القيم النصية باللغة العربية.
 
@@ -113,7 +113,7 @@ Your task is to analyze an image of a plant and provide a detailed diagnosis and
 Based on the provided image, provide the following information in a structured JSON format. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
 All text values in the JSON should be in English.
 
-Even if the image quality is very low (e.g., blurry, bad lighting, out of focus), you must always attempt an analysis. Do not reject the image due to poor quality. Provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields.
+Even if the image quality is very low (e.g., blurry, bad lighting, out of focus), you must always attempt an analysis. Do not reject the image due to poor quality. Provide your most likely diagnosis and explicitly state that your confidence is low due to image quality in the "description" or "severityDescription" fields. If the image is so poor that it is absolutely impossible to identify anything, populate the JSON fields with appropriate values like "Undetermined" and "Extremely poor image quality" while always maintaining a valid JSON structure.
 
 The JSON object must have the following keys: "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription", "imageQualityScore", "imageQualityDescription".
 
