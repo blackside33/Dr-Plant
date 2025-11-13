@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CameraIcon, UploadIcon } from './icons';
+import { CameraIcon, UploadIcon, FocusIcon, SunIcon, CheckCircleIcon, BackgroundIcon } from './icons';
 
 interface ImageInputProps {
   onImageSelect: (imageData: { base64: string; mimeType: string }) => void;
@@ -97,7 +97,30 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelect, onClear, 
     <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full flex flex-col justify-between">
         <div>
             <h2 className="text-xl font-bold mb-4 text-[var(--color-primary)]">{t('uploadTitle')}</h2>
-            <p className="text-gray-600 dark:text-[var(--text-muted-dark)] mb-6">{t('uploadInstructions')}</p>
+            <p className="text-gray-600 dark:text-[var(--text-muted-dark)] mb-4">{t('uploadInstructions')}</p>
+            
+            <div className="mb-6 p-4 bg-gray-500/10 rounded-lg border border-black/5 dark:border-white/5">
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">{t('photoTipsTitle')}</h3>
+                <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
+                    <li className="flex items-center">
+                        <FocusIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <span>{t('tipFocus')}</span>
+                    </li>
+                    <li className="flex items-center">
+                        <SunIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <span>{t('tipLight')}</span>
+                    </li>
+                    <li className="flex items-center">
+                        <CheckCircleIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <span>{t('tipClarity')}</span>
+                    </li>
+                    <li className="flex items-center">
+                        <BackgroundIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <span>{t('tipBackground')}</span>
+                    </li>
+                </ul>
+            </div>
+
             <div className="space-y-4">
                  <button onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">
                     <UploadIcon className="w-6 h-6 me-2" />

@@ -66,5 +66,10 @@
     "productivityOutlook": "توقعات الإنتاجية",
     "tipsErrorTitle": "تعذر جلب المقترحات",
     "locationInputPlaceholder": "مثال: عمان، إربد",
-    "searchButton": "بحث"
+    "searchButton": "بحث",
+    "photoTipsTitle": "لأفضل النتائج",
+    "tipFocus": "ركز على ورقة واحدة مصابة.",
+    "tipLight": "استخدم إضاءة طبيعية وواضحة.",
+    "tipClarity": "تأكد من أن الصورة حادة وغير ضبابية.",
+    "tipBackground": "استخدم خلفية بسيطة وغير معقدة."
 }
