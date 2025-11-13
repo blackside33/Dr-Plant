@@ -217,10 +217,10 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
 
         The JSON object must have the following keys:
         1. "summary": A string providing a general summary of the current planting season and conditions for the region.
-        2. "suggestions": An array of at least 3-4 plant suggestion objects. Each object must have:
+        2. "suggestions": An array of at least 3-4 plant suggestion objects. The suggestions should include a mix of both productive crops (like vegetables or fruits) and ornamental plants (like flowers or decorative shrubs). Each object must have:
             - "plantName": The name of the suggested plant or crop.
             - "plantingAdvice": A string with concise, actionable advice for planting this crop now (e.g., soil preparation, timing).
-            - "productivityOutlook": A string describing the expected yield, benefits, or market opportunities for this crop.
+            - "productivityOutlook": A string describing the expected yield, benefits, or market opportunities for this crop. For ornamental plants, this should describe their aesthetic value, flowering season, or care benefits.
     `;
 
     try {
