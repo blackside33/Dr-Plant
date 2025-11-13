@@ -221,6 +221,7 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
             - "plantName": The name of the suggested plant or crop.
             - "plantingAdvice": A string with concise, actionable advice for planting this crop now (e.g., soil preparation, timing).
             - "productivityOutlook": A string describing the expected yield, benefits, or market opportunities for this crop. For ornamental plants, this should describe their aesthetic value, flowering season, or care benefits.
+            - "category": A string that must be either 'Productive' for crops like vegetables or fruits, or 'Ornamental' for plants like flowers or decorative shrubs.
     `;
 
     try {
@@ -241,8 +242,9 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
                                     plantName: { type: Type.STRING },
                                     plantingAdvice: { type: Type.STRING },
                                     productivityOutlook: { type: Type.STRING },
+                                    category: { type: Type.STRING },
                                 },
-                                required: ['plantName', 'plantingAdvice', 'productivityOutlook'],
+                                required: ['plantName', 'plantingAdvice', 'productivityOutlook', 'category'],
                             },
                         },
                     },

@@ -45,6 +45,7 @@ export interface PlantSuggestion {
   plantName: string;
   plantingAdvice: string;
   productivityOutlook: string;
+  category: 'Productive' | 'Ornamental';
 }
 
 export interface AgriculturalTipsData {

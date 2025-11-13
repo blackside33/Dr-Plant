@@ -64,6 +64,8 @@
     "plantName": "Plant",
     "plantingAdvice": "Planting Advice",
     "productivityOutlook": "Productivity Outlook",
+    "productiveCrops": "Productive Crops",
+    "ornamentalPlants": "Ornamental Plants",
     "tipsErrorTitle": "Could Not Fetch Suggestions",
     "locationInputPlaceholder": "e.g., Amman, Irbid",
     "searchButton": "Search",

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AgriculturalTipsData } from '../types';
+import { AgriculturalTipsData, PlantSuggestion } from '../types';
 import { SeedlingIcon } from './icons';
 
 interface AgriculturalTipsModalProps {
@@ -16,11 +16,34 @@ const LoadingSpinner: React.FC = () => (
     <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[var(--color-primary)]"></div>
 );
 
+const SuggestionCard: React.FC<{ suggestion: PlantSuggestion }> = ({ suggestion }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="bg-gray-500/10 p-4 rounded-lg border-l-4 border-[var(--color-primary)]">
+            <h4 className="font-bold text-lg text-[var(--color-primary)] mb-2">{suggestion.plantName}</h4>
+            <div className="space-y-2 text-sm">
+                <div>
+                    <p className="font-semibold text-gray-700 dark:text-gray-300">{t('plantingAdvice')}:</p>
+                    <p className="text-gray-600 dark:text-gray-400">{suggestion.plantingAdvice}</p>
+                </div>
+                <div>
+                    <p className="font-semibold text-gray-700 dark:text-gray-300">{t('productivityOutlook')}:</p>
+                    <p className="text-gray-600 dark:text-gray-400">{suggestion.productivityOutlook}</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ isOpen, onClose, isLoading, error, data, onManualSearch }) => {
     const { t } = useTranslation();
     const [locationInput, setLocationInput] = useState('');
 
     if (!isOpen) return null;
+
+    const productiveCrops = data?.suggestions.filter(s => s.category === 'Productive') || [];
+    const ornamentalPlants = data?.suggestions.filter(s => s.category === 'Ornamental') || [];
+    const uncategorized = data?.suggestions.filter(s => s.category !== 'Productive' && s.category !== 'Ornamental') || [];
 
     return (
         <div 
@@ -96,23 +119,37 @@ export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ is
                                 </div>
                             </div>
                             
-                            <div className="space-y-4">
-                                {data.suggestions.map((suggestion, index) => (
-                                    <div key={index} className="bg-gray-500/10 p-4 rounded-lg border-l-4 border-[var(--color-primary)]">
-                                        <h4 className="font-bold text-lg text-[var(--color-primary)] mb-2">{suggestion.plantName}</h4>
-                                        <div className="space-y-2 text-sm">
-                                            <div>
-                                                <p className="font-semibold text-gray-700 dark:text-gray-300">{t('plantingAdvice')}:</p>
-                                                <p className="text-gray-600 dark:text-gray-400">{suggestion.plantingAdvice}</p>
-                                            </div>
-                                             <div>
-                                                <p className="font-semibold text-gray-700 dark:text-gray-300">{t('productivityOutlook')}:</p>
-                                                <p className="text-gray-600 dark:text-gray-400">{suggestion.productivityOutlook}</p>
-                                            </div>
-                                        </div>
+                           {productiveCrops.length > 0 && (
+                                <div>
+                                    <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200 border-b border-gray-500/20 pb-2">{t('productiveCrops')}</h3>
+                                    <div className="space-y-4">
+                                        {productiveCrops.map((suggestion, index) => (
+                                            <SuggestionCard key={`prod-${index}`} suggestion={suggestion} />
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                           )}
+
+                           {ornamentalPlants.length > 0 && (
+                                <div className="pt-4">
+                                    <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200 border-b border-gray-500/20 pb-2">{t('ornamentalPlants')}</h3>
+                                    <div className="space-y-4">
+                                        {ornamentalPlants.map((suggestion, index) => (
+                                            <SuggestionCard key={`orn-${index}`} suggestion={suggestion} />
+                                        ))}
+                                    </div>
+                                </div>
+                           )}
+
+                           {uncategorized.length > 0 && (
+                                <div className="pt-4">
+                                    <div className="space-y-4">
+                                        {uncategorized.map((suggestion, index) => (
+                                            <SuggestionCard key={`uncat-${index}`} suggestion={suggestion} />
+                                        ))}
+                                    </div>
+                                </div>
+                           )}
                         </div>
                     )}
                 </div>
