@@ -205,7 +205,11 @@ function App() {
 
       } catch (err: any) {
         console.error("Translation failed:", err);
-        setError(t('translationFailedBody'));
+        if (err.message === 'SERVICE_UNAVAILABLE') {
+            setError(t('serviceUnavailableError'));
+        } else {
+            setError(t('translationFailedBody'));
+        }
       } finally {
         setIsLoading(false);
       }
@@ -253,6 +257,8 @@ function App() {
         console.error("Analysis failed:", err);
         if (err.message === 'NOT_A_PLANT') {
             setError(t('notAPlantError'));
+        } else if (err.message === 'SERVICE_UNAVAILABLE') {
+            setError(t('serviceUnavailableError'));
         } else {
             setError(t('analysisFailedBody'));
         }
@@ -295,7 +301,11 @@ function App() {
           const data = await getWeatherForecast({lat: latitude, lon: longitude}, i18n.language);
           setWeatherData(data);
         } catch (err: any) {
-          setWeatherError(err.message || 'An unknown error occurred.');
+          if (err.message === 'SERVICE_UNAVAILABLE') {
+            setWeatherError(t('serviceUnavailableError'));
+          } else {
+            setWeatherError(err.message || 'An unknown error occurred.');
+          }
         } finally {
           setIsWeatherLoading(false);
         }
@@ -333,7 +343,11 @@ function App() {
         const data = await getWeatherForecast({ name: locationName }, i18n.language);
         setWeatherData(data);
     } catch (err: any) {
-        setWeatherError(err.message || t('weatherErrorBody'));
+        if (err.message === 'SERVICE_UNAVAILABLE') {
+            setWeatherError(t('serviceUnavailableError'));
+        } else {
+            setWeatherError(err.message || t('weatherErrorBody'));
+        }
     } finally {
         setIsWeatherLoading(false);
     }
@@ -353,7 +367,11 @@ function App() {
           const data = await getAgriculturalTips({ lat: latitude, lon: longitude }, i18n.language);
           setAgriculturalTips(data);
         } catch (err: any) {
-          setTipsError(err.message || 'An unknown error occurred.');
+          if (err.message === 'SERVICE_UNAVAILABLE') {
+            setTipsError(t('serviceUnavailableError'));
+          } else {
+            setTipsError(err.message || 'An unknown error occurred.');
+          }
         } finally {
           setIsTipsLoading(false);
         }
@@ -384,7 +402,11 @@ function App() {
         const data = await getAgriculturalTips({ name: locationName }, i18n.language);
         setAgriculturalTips(data);
     } catch (err: any) {
-        setTipsError(err.message || t('weatherErrorBody'));
+        if (err.message === 'SERVICE_UNAVAILABLE') {
+            setTipsError(t('serviceUnavailableError'));
+        } else {
+            setTipsError(err.message || t('weatherErrorBody'));
+        }
     } finally {
         setIsTipsLoading(false);
     }

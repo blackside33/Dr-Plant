@@ -72,6 +72,10 @@ export const isImageOfPlant = async (base64Image: string, mimeType: string): Pro
   } catch (error) {
     console.error("Error during image plant verification with Gemini:", error);
      if (error instanceof Error) {
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('RESOURCE_EXHAUSTED') || errorMessage.includes('Quota exceeded')) {
+            throw new Error('SERVICE_UNAVAILABLE');
+        }
         throw new Error(`Gemini API Error during verification: ${error.message}`);
     }
     throw new Error('An unknown error occurred during image verification.');
@@ -203,6 +207,13 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
     return parsedResponse;
   } catch (error) {
     console.error("Error analyzing image with Gemini:", error);
+
+    if (error instanceof Error) {
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('RESOURCE_EXHAUSTED') || errorMessage.includes('Quota exceeded')) {
+            throw new Error('SERVICE_UNAVAILABLE');
+        }
+    }
     
     if (language === 'ar') {
         return {
@@ -300,6 +311,10 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
     } catch (error) {
         console.error("Error getting weather forecast from Gemini:", error);
         if (error instanceof Error) {
+            const errorMessage = error.message || '';
+            if (errorMessage.includes('RESOURCE_EXHAUSTED') || errorMessage.includes('Quota exceeded')) {
+                throw new Error('SERVICE_UNAVAILABLE');
+            }
             throw new Error(`Gemini API Error: ${error.message}`);
         }
         throw new Error('An unknown error occurred while communicating with the Gemini API for weather data.');
@@ -369,6 +384,10 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
     } catch (error) {
         console.error("Error getting agricultural tips from Gemini:", error);
         if (error instanceof Error) {
+            const errorMessage = error.message || '';
+            if (errorMessage.includes('RESOURCE_EXHAUSTED') || errorMessage.includes('Quota exceeded')) {
+                throw new Error('SERVICE_UNAVAILABLE');
+            }
             throw new Error(`Gemini API Error: ${error.message}`);
         }
         throw new Error('An unknown error occurred while communicating with the Gemini API for agricultural tips.');
