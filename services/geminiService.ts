@@ -209,13 +209,14 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
 
     const prompt = `
         You are a helpful meteorological assistant specializing in agricultural advice.
+        Use your search tool to get the most up-to-date, real-time weather information.
         Provide a weather forecast for ${locationString}.
-        The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
+        The response must be a single JSON object, enclosed in markdown format (\`\`\`json ... \`\`\`). Do not include any text or explanations outside of the JSON structure.
         ${langInstruction}
 
         The JSON object must contain the following keys:
         1. "current_temp": A number representing the current temperature in Celsius.
-        2. "condition": A short string describing the current weather (e.g., "Sunny", "Partly Cloudy").
+        2. "condition": A short string describing the current weather (e.g., "Sunny", "Rainy", "Partly Cloudy").
         3. "humidity": A number representing the current humidity percentage.
         4. "wind_speed": A number representing the current wind speed in kilometers per hour (km/h).
         5. "agricultural_summary": A brief, simple, and helpful summary for farmers based on the current weather and short-term forecast.
@@ -231,31 +232,7 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        current_temp: { type: Type.NUMBER },
-                        condition: { type: Type.STRING },
-                        humidity: { type: Type.NUMBER },
-                        wind_speed: { type: Type.NUMBER },
-                        agricultural_summary: { type: Type.STRING },
-                        forecast: {
-                            type: Type.ARRAY,
-                            items: {
-                                type: Type.OBJECT,
-                                properties: {
-                                    day: { type: Type.STRING },
-                                    min_temp: { type: Type.NUMBER },
-                                    max_temp: { type: Type.NUMBER },
-                                    condition: { type: Type.STRING },
-                                },
-                                required: ['day', 'min_temp', 'max_temp', 'condition'],
-                            },
-                        },
-                    },
-                    required: ['current_temp', 'condition', 'humidity', 'wind_speed', 'agricultural_summary', 'forecast'],
-                },
+                tools: [{googleSearch: {}}],
             },
         });
         const jsonString = extractJson(response.text);
@@ -289,8 +266,9 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
 
     const prompt = `
         You are an expert agricultural advisor with deep knowledge of Jordanian climate and soil.
+        Use your search tool to get information about the current season, weather patterns, and local conditions.
         Based on ${locationString} and the current date, provide practical planting suggestions.
-        The response must be a single JSON object. Do not include any text, explanations, or markdown formatting outside of the JSON structure.
+        The response must be a single JSON object, enclosed in markdown format (\`\`\`json ... \`\`\`). Do not include any text or explanations outside of the JSON structure.
         ${langInstruction}
 
         The JSON object must have the following keys:
@@ -307,27 +285,7 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        summary: { type: Type.STRING },
-                        suggestions: {
-                            type: Type.ARRAY,
-                            items: {
-                                type: Type.OBJECT,
-                                properties: {
-                                    plantName: { type: Type.STRING },
-                                    plantingAdvice: { type: Type.STRING },
-                                    productivityOutlook: { type: Type.STRING },
-                                    category: { type: Type.STRING },
-                                },
-                                required: ['plantName', 'plantingAdvice', 'productivityOutlook', 'category'],
-                            },
-                        },
-                    },
-                    required: ['summary', 'suggestions'],
-                },
+                tools: [{googleSearch: {}}],
             },
         });
 
