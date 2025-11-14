@@ -1,9 +1,10 @@
 
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData, WeatherData, AgriculturalTipsData } from './types';
-import { analyzePlantImage, getWeatherForecast, getAgriculturalTips, isImageOfPlant } from './services/geminiService';
+import { analyzePlantImage, getWeatherForecast, getAgriculturalTips } from './services/geminiService';
 import { ImageInput } from './components/ImageInput';
 import { AnalysisDisplay } from './components/AnalysisDisplay';
 import { HistorySidebar } from './components/HistorySidebar';
@@ -191,9 +192,11 @@ function App() {
 
         const translatedResult = await analyzePlantImage(base64, mimeType, i18n.language);
         
+        const { isPlant, isArtificialPlant, ...analysisData } = translatedResult;
+
         const updatedAnalysis: AnalysisResultData = {
           ...currentAnalysis,
-          ...translatedResult,
+          ...analysisData,
           language: i18n.language,
         };
 
@@ -231,25 +234,28 @@ function App() {
     setIsLoading(true);
     setError(null);
     setCurrentAnalysis(null);
-    setLoadingMessageKey('verifyingImage');
+    setLoadingMessageKey('analyzingMessage');
 
     try {
-        // Step 1: Verify if the image is a plant
-        const isPlant = await isImageOfPlant(currentImage.base64, currentImage.mimeType);
-        if (!isPlant) {
-            // Custom error to be caught below
+        // Step 1: Analyze the image (includes plant and artificial checks)
+        const result = await analyzePlantImage(currentImage.base64, currentImage.mimeType, i18n.language);
+        
+        // Step 2: Validate the result from the single API call
+        if (!result.isPlant) {
             throw new Error('NOT_A_PLANT');
         }
+        if (result.isArtificialPlant) {
+            throw new Error('ARTIFICIAL_PLANT');
+        }
 
-        // Step 2: Proceed with the full analysis
-        setLoadingMessageKey('analyzingMessage');
-        const result = await analyzePlantImage(currentImage.base64, currentImage.mimeType, i18n.language);
+        // Step 3: Create and store the analysis if valid
+        const { isPlant, isArtificialPlant, ...analysisData } = result;
         const newAnalysis: AnalysisResultData = {
             id: new Date().toISOString(),
             imageUrl: currentImage.dataUrl,
             timestamp: new Date().toISOString(),
             language: i18n.language,
-            ...result,
+            ...analysisData,
         };
         setCurrentAnalysis(newAnalysis);
         setAnalyses(prev => [newAnalysis, ...prev]);
@@ -257,6 +263,8 @@ function App() {
         console.error("Analysis failed:", err);
         if (err.message === 'NOT_A_PLANT') {
             setError(t('notAPlantError'));
+        } else if (err.message === 'ARTIFICIAL_PLANT') {
+            setError(t('artificialPlantError'));
         } else if (err.message === 'SERVICE_UNAVAILABLE') {
             setError(t('serviceUnavailableError'));
         } else {

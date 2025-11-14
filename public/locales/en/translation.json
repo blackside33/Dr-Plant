@@ -22,6 +22,7 @@
     "analysisFailedTitle": "Analysis Failed",
     "analysisFailedBody": "Analysis could not be completed. This might be due to a network issue or an unexpected problem with the AI service. Please check your connection and try again.",
     "notAPlantError": "The uploaded image does not appear to contain a plant. Please ensure you photograph the plant according to the instructions.",
+    "artificialPlantError": "The uploaded image appears to be of an artificial or fake plant. This tool is designed for analyzing real plants.",
     "serviceUnavailableError": "The service is currently unavailable. Please try again later.",
     "translationFailedBody": "Failed to translate the analysis. Please check your network connection and try again.",
     "imageReadyTitle": "Image Ready for Analysis",
