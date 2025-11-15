@@ -1,5 +1,3 @@
-
-
 {
     "headerTitle": "Doctor Plant",
     "headerSubtitle": "Your AI-powered plant care assistant",
@@ -81,5 +79,20 @@
     "tipLight": "Use clear, natural lighting.",
     "tipClarity": "Ensure the image is sharp, not blurry.",
     "tipBackground": "Use a simple, plain background.",
-    "imageQuality": "Image Quality & Analysis Confidence"
+    "imageQuality": "Image Quality & Analysis Confidence",
+    "howToUse": "How to Use",
+    "skip": "Skip",
+    "next": "Next",
+    "finish": "Finish",
+    "howToUseTitle": "How to Use Doctor Plant",
+    "howToUseStep1Title": "Step 1: Provide an Image",
+    "howToUseStep1Desc": "Tap 'Upload from Device' to select a photo from your gallery, or tap 'Use Camera' to take a new one. Follow the photo tips for the best results.",
+    "howToUseStep2Title": "Step 2: Analyze",
+    "howToUseStep2Desc": "Once your image is loaded, tap the 'Analyze Plant' button. The AI will examine the photo to identify any issues.",
+    "howToUseStep3Title": "Step 3: View Results",
+    "howToUseStep3Desc": "Review the detailed report, including the diagnosis, severity level, and tailored treatment recommendations for Jordan.",
+    "howToUseStep4Title": "Step 4: Check History",
+    "howToUseStep4Desc": "All your analyses are automatically saved. You can revisit, download, or delete them from the history panel at any time.",
+    "howToUseStep5Title": "Step 5: Use Extra Tools",
+    "howToUseStep5Desc": "Click the icons in the header to get local weather forecasts and seasonal agricultural tips to help you plan."
 }
