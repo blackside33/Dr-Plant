@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData, WeatherData, AgriculturalTipsData } from './types';
@@ -35,7 +32,7 @@ const Header: React.FC<{
 }> = ({ onWeatherClick, onTipsClick, theme, onThemeChange }) => {
     const { t } = useTranslation();
     return (
-        <header className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] shadow-md p-4 mb-8 border-b-2 border-[var(--color-primary)]">
+        <header className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] shadow-sm p-4 mb-8">
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center">
               <LeafIcon className="w-10 h-10 text-[var(--color-secondary)] me-3 flex-shrink-0" />
@@ -49,14 +46,14 @@ const Header: React.FC<{
               <ThemeSwitcher theme={theme} onThemeChange={onThemeChange} />
               <button
                 onClick={onWeatherClick}
-                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-[var(--color-primary)] transition-colors"
                 aria-label={t('weather')}
               >
                 <WeatherIcon className="w-6 h-6" />
               </button>
                <button
                 onClick={onTipsClick}
-                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors"
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-[var(--color-primary)] transition-colors"
                 aria-label={t('agriculturalSuggestions')}
               >
                 <SeedlingIcon className="w-6 h-6" />

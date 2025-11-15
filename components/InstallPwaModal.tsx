@@ -26,7 +26,7 @@ export const InstallPwaModal: React.FC<InstallPwaModalProps> = ({ isOpen, onClos
             aria-labelledby="install-modal-title"
         >
             <div 
-                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-md text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border-2 border-[var(--color-secondary)]"
+                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-md text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border border-black/5 dark:border-white/10"
                 onClick={(e) => e.stopPropagation()}
                 style={{ animation: 'fade-in-scale 0.3s forwards' }}
             >

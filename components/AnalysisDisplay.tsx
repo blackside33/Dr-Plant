@@ -107,10 +107,10 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
   };
   
   return (
-    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full overflow-y-auto">
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-xl shadow-lg border border-black/5 dark:border-white/5 h-full overflow-y-auto">
       <div className="flex flex-col items-center justify-center h-full">
         {isLoading && <Spinner messageKey={loadingMessageKey} />}
-        {!isLoading && error && <div className="text-center text-red-500 dark:text-red-400 p-4 bg-red-100 dark:bg-red-900/50 rounded-md">
+        {!isLoading && error && <div className="text-center text-rose-600 dark:text-rose-300 p-4 bg-rose-100 dark:bg-rose-900/50 rounded-md">
             <h3 className="font-bold text-lg">{t('analysisFailedTitle')}</h3>
             <p>{error}</p>
         </div>}
@@ -130,7 +130,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
             <div className="mt-6 text-center">
               <button
                 onClick={handleDownloadPdf}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
               >
                 <DownloadIcon className="w-5 h-5 me-2" />
                 {t('downloadPDF')}

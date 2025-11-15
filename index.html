@@ -7,7 +7,7 @@
     <title>طبيب النبات</title>
 
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#363636" />
+    <meta name="theme-color" content="#4A5568" />
     <link rel="apple-touch-icon" href="/icon.svg" />
 
     <!-- iOS specific PWA tags -->
@@ -25,25 +25,27 @@
         --font-sans: 'Inter', sans-serif;
         --font-arabic: 'Cairo', sans-serif;
         
-        --color-primary: #A5C882; /* Light Green */
-        --color-primary-hover: #8EAE6E;
-        --color-secondary: #D9822B; /* Brownish Orange */
-        --color-secondary-hover: #B46D24;
+        /* New Palette - Cool & Calm */
+        --color-primary: #89A1B0;      /* Dusty Blue */
+        --color-primary-hover: #70899A;
+        --color-secondary: #D6DDE4;    /* Light Cool Gray */
+        --color-secondary-hover: #C2CBD4;
+        --color-accent: #B4A6C2;       /* Gentle Lavender */
 
-        --bg-light: #F8F9FA; /* Softer light bg */
-        --bg-dark: #4A4A4A; /* Dark Grey bg */
+        --bg-light: #F7F9FB;          /* Cool Off-White */
+        --bg-dark: #2D3748;           /* Dark Slate Blue */
         
         --card-bg-light: #FFFFFF;
-        --card-bg-dark: #363636; /* Darker grey for cards */
+        --card-bg-dark: #4A5568;       /* Lighter Slate */
 
-        --text-light: #212121;
-        --text-dark: #E0E0E0;
-        --text-muted-light: #6b7280;
-        --text-muted-dark: #a0aec0;
+        --text-light: #2D3748;
+        --text-dark: #E2E8F0;
+        --text-muted-light: #718096;
+        --text-muted-dark: #A0AEC0;
 
-        /* New Jordanian-inspired pattern background */
-        --pattern-light: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2.5L11.25 7.5L16.25 8.75L11.25 10L10 15L8.75 10L3.75 8.75L8.75 7.5Z' stroke-width='0.5' stroke='rgba(0,0,0,0.06)' fill='none'/%3e%3c/svg%3e");
-        --pattern-dark: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2.5L11.25 7.5L16.25 8.75L11.25 10L10 15L8.75 10L3.75 8.75L8.75 7.5Z' stroke-width='0.5' stroke='rgba(255,255,255,0.06)' fill='none'/%3e%3c/svg%3e");
+        /* Jordanian Sadu-inspired pattern with new primary color */
+        --pattern-light: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg stroke='%2389A1B0' stroke-width='0.5' opacity='0.2'%3e%3cpath d='M0 20 L20 0 L40 20 L20 40 Z M20 0 L20 40 M0 20 L40 20'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
+        --pattern-dark: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg stroke='%2389A1B0' stroke-width='0.5' opacity='0.1'%3e%3cpath d='M0 20 L20 0 L40 20 L20 40 Z M20 0 L20 40 M0 20 L40 20'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
       }
       
       html[lang="ar"] body {
@@ -62,7 +64,7 @@
       .app-container {
         transition: background-color 0.5s ease-in-out;
         background-image: var(--pattern-light);
-        background-size: 28px 28px;
+        background-size: 40px 40px;
         animation: pan-bg 120s linear infinite;
       }
       
@@ -72,7 +74,7 @@
 
       @keyframes pan-bg {
         0% { background-position: 0 0; }
-        100% { background-position: -280px -280px; }
+        100% { background-position: -400px -400px; }
       }
       
       .bg-app-default {
@@ -83,33 +85,33 @@
       }
 
       .bg-app-healthy {
-          background-color: #F0FDF4; /* Very pale green */
+          background-color: hsl(150, 25%, 97%);
       }
       .dark .bg-app-healthy {
-          background-color: hsl(125, 40%, 20%);
+          background-color: #2c3937;
       }
       
       .bg-app-medium {
-          background-color: #FEFCE8; /* Very pale yellow */
+          background-color: hsl(200, 30%, 97%);
       }
       .dark .bg-app-medium {
-          background-color: hsl(50, 40%, 20%);
+          background-color: #2d343a;
       }
       
       .bg-app-high {
-          background-color: #FEF2F2; /* Very pale red */
+          background-color: hsl(270, 20%, 97%);
       }
       .dark .bg-app-high {
-          background-color: hsl(10, 40%, 20%);
+          background-color: #3a2d39;
       }
 
       @keyframes pulse-bg-light {
           0%, 100% { background-color: var(--bg-light); }
-          50% { background-color: #EFF0F1; } /* Subtle pulse */
+          50% { background-color: #F0F2F4; } /* Subtle pulse */
       }
       @keyframes pulse-bg-dark {
           0%, 100% { background-color: var(--bg-dark); }
-          50% { background-color: #555555; }
+          50% { background-color: #354154; }
       }
       
       .bg-app-loading {

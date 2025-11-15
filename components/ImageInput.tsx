@@ -58,7 +58,7 @@ const CameraModal: React.FC<{ onClose: () => void; onCapture: (dataUrl: string) 
             <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-lg p-4 max-w-3xl w-full">
                 <video ref={videoRef} autoPlay playsInline className="w-full rounded-md mb-4"></video>
                 <div className="flex justify-between">
-                    <button onClick={onClose} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">{t('cancel')}</button>
+                    <button onClick={onClose} className="px-4 py-2 bg-stone-500 text-white rounded-md hover:bg-stone-600 transition-colors">{t('cancel')}</button>
                     <button onClick={handleCapture} className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">{t('snapPhoto')}</button>
                 </div>
                 <canvas ref={canvasRef} className="hidden"></canvas>
@@ -94,41 +94,41 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelect, onClear, 
   };
 
   return (
-    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full flex flex-col justify-between">
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-xl shadow-lg border border-black/5 dark:border-white/5 h-full flex flex-col justify-between">
         <div>
             <h2 className="text-xl font-bold mb-4 text-[var(--color-primary)]">{t('uploadTitle')}</h2>
             <p className="text-gray-600 dark:text-[var(--text-muted-dark)] mb-4">{t('uploadInstructions')}</p>
             
-            <div className="mb-6 p-4 bg-gray-500/10 rounded-lg border border-black/5 dark:border-white/5">
+            <div className="mb-6 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
                 <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">{t('photoTipsTitle')}</h3>
                 <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
                     <li className="flex items-center">
-                        <FocusIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <FocusIcon className="w-4 h-4 me-2 text-[var(--color-primary)] flex-shrink-0" />
                         <span>{t('tipFocus')}</span>
                     </li>
                     <li className="flex items-center">
-                        <SunIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <SunIcon className="w-4 h-4 me-2 text-[var(--color-primary)] flex-shrink-0" />
                         <span>{t('tipLight')}</span>
                     </li>
                     <li className="flex items-center">
-                        <CheckCircleIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <CheckCircleIcon className="w-4 h-4 me-2 text-[var(--color-primary)] flex-shrink-0" />
                         <span>{t('tipClarity')}</span>
                     </li>
                     <li className="flex items-center">
-                        <BackgroundIcon className="w-4 h-4 me-2 text-[var(--color-secondary)] flex-shrink-0" />
+                        <BackgroundIcon className="w-4 h-4 me-2 text-[var(--color-primary)] flex-shrink-0" />
                         <span>{t('tipBackground')}</span>
                     </li>
                 </ul>
             </div>
 
             <div className="space-y-4">
-                 <button onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">
+                 <button onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-all duration-200 transform hover:scale-105">
                     <UploadIcon className="w-6 h-6 me-2" />
                     {t('uploadButton')}
                 </button>
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-                <button onClick={() => setShowCamera(true)} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-colors">
+                <button onClick={() => setShowCamera(true)} className="w-full flex items-center justify-center px-4 py-3 bg-[var(--color-secondary)] text-white rounded-md hover:bg-[var(--color-secondary-hover)] transition-all duration-200 transform hover:scale-105">
                     <CameraIcon className="w-6 h-6 me-2" />
                     {t('cameraButton')}
                 </button>
@@ -147,7 +147,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelect, onClear, 
             <button
                 onClick={onClear}
                 disabled={isLoading}
-                className="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-500"
+                className="w-full px-4 py-2 bg-stone-500 text-white rounded-md hover:bg-stone-600 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-500"
             >
                 {t('clearButton')}
             </button>

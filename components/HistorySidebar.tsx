@@ -126,17 +126,17 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
   };
 
   return (
-    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-lg shadow-md border border-black/10 dark:border-white/10 h-full flex flex-col">
+    <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-xl shadow-lg border border-black/5 dark:border-white/5 h-full flex flex-col">
       <h2 className="text-xl font-bold mb-4 text-[var(--color-primary)]">{t('historyTitle')}</h2>
       {analyses.length === 0 ? (
         <p className="text-gray-600 dark:text-[var(--text-muted-dark)] flex-grow flex items-center justify-center">{t('noHistory')}</p>
       ) : (
         <div className="flex-grow space-y-3 overflow-y-auto -mr-2 pr-2">
           {analyses.map((analysis) => (
-            <div key={analysis.id} className={`w-full text-left p-2 rounded-md transition-colors flex items-center space-x-3 rtl:space-x-reverse ${currentAnalysisId === analysis.id ? 'bg-[var(--color-primary)]/10' : 'bg-gray-500/10'}`}>
+            <div key={analysis.id} className={`w-full text-left p-2 rounded-md transition-colors flex items-center space-x-3 rtl:space-x-reverse border-l-4 ${currentAnalysisId === analysis.id ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]' : 'bg-black/5 dark:bg-white/5 border-transparent'}`}>
                 <input 
                     type="checkbox"
-                    className="form-checkbox flex-shrink-0 h-5 w-5 text-[var(--color-secondary)] bg-gray-200 dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-[var(--color-secondary)]"
+                    className="form-checkbox flex-shrink-0 h-5 w-5 text-[var(--color-primary)] bg-gray-200 dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-[var(--color-primary)]"
                     checked={selectedIds.has(analysis.id)}
                     onChange={() => handleToggleSelect(analysis.id)}
                     aria-label={`Select analysis for ${analysis.disease}`}
@@ -146,7 +146,7 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
                     <div className="overflow-hidden">
                         <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                                analysis.severityLevel <= 3 ? 'bg-green-500' : analysis.severityLevel <= 7 ? 'bg-yellow-500' : 'bg-red-500'
+                                analysis.severityLevel <= 3 ? 'bg-teal-500' : analysis.severityLevel <= 7 ? 'bg-sky-500' : 'bg-violet-500'
                             }`}></div>
                             <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate">{analysis.disease}</h3>
                         </div>
@@ -182,7 +182,7 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
             <button
                 onClick={handleDeleteClick}
                 disabled={selectedIds.size === 0 || isDownloading}
-                className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 dark:disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
                 <TrashIcon className="w-5 h-5 me-2" />
                 {t('deleteSelected')}

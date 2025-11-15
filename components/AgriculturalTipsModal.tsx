@@ -54,7 +54,7 @@ export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ is
             aria-labelledby="tips-modal-title"
         >
             <div 
-                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-2xl text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border-2 border-[var(--color-secondary)] max-h-[90vh] flex flex-col"
+                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-2xl text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border border-black/5 dark:border-white/10 max-h-[90vh] flex flex-col"
                 onClick={(e) => e.stopPropagation()}
                 style={{ animation: 'fade-in-scale 0.3s forwards' }}
             >
@@ -89,9 +89,9 @@ export const AgriculturalTipsModal: React.FC<AgriculturalTipsModalProps> = ({ is
                     )}
 
                     {!isLoading && error && !data && (
-                         <div className="flex flex-col items-center justify-center h-64 text-center bg-red-100 dark:bg-red-900/50 p-4 rounded-lg">
-                             <h3 className="font-bold text-lg text-red-600 dark:text-red-300">{t('tipsErrorTitle')}</h3>
-                             <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
+                         <div className="flex flex-col items-center justify-center h-64 text-center bg-rose-100 dark:bg-rose-900/50 p-4 rounded-lg">
+                             <h3 className="font-bold text-lg text-rose-600 dark:text-rose-300">{t('tipsErrorTitle')}</h3>
+                             <p className="text-rose-500 dark:text-rose-400 mb-4">{error}</p>
                              <form onSubmit={(e) => { e.preventDefault(); onManualSearch(locationInput); }} className="w-full max-w-sm">
                                 <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                     <input 

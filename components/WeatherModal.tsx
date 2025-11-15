@@ -31,7 +31,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
             aria-labelledby="weather-modal-title"
         >
             <div 
-                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-lg text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border-2 border-[var(--color-primary)]"
+                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-lg text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border border-black/5 dark:border-white/10"
                 onClick={(e) => e.stopPropagation()}
                 style={{ animation: 'fade-in-scale 0.3s forwards' }}
             >
@@ -61,9 +61,9 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                     )}
 
                     {!isLoading && error && !data && (
-                        <div className="flex flex-col items-center justify-center h-64 text-center bg-red-100 dark:bg-red-900/50 p-4 rounded-lg">
-                             <h3 className="font-bold text-lg text-red-600 dark:text-red-300">{t('weatherErrorTitle')}</h3>
-                             <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
+                        <div className="flex flex-col items-center justify-center h-64 text-center bg-rose-100 dark:bg-rose-900/50 p-4 rounded-lg">
+                             <h3 className="font-bold text-lg text-rose-600 dark:text-rose-300">{t('weatherErrorTitle')}</h3>
+                             <p className="text-rose-500 dark:text-rose-400 mb-4">{error}</p>
                               <form onSubmit={(e) => { e.preventDefault(); onManualSearch(locationInput); }} className="w-full max-w-sm">
                                 <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                     <input 
@@ -102,11 +102,11 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                              {/* Agricultural Tip */}
                              <div>
                                 <h3 className="text-lg font-semibold mb-2 flex items-center">
-                                    <LeafIcon className="w-5 h-5 me-2 text-[var(--color-secondary)]" />
+                                    <LeafIcon className="w-5 h-5 me-2 text-teal-500" />
                                     {t('agriculturalTip')}
                                 </h3>
-                                <div className="bg-green-50 dark:bg-green-900/50 border-l-4 border-[var(--color-secondary)] p-4 rounded-r-lg">
-                                    <p className="text-sm text-green-800 dark:text-green-200">{data.agricultural_summary}</p>
+                                <div className="bg-teal-50 dark:bg-teal-900/50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                                    <p className="text-sm text-teal-800 dark:text-teal-200">{data.agricultural_summary}</p>
                                 </div>
                             </div>
                             
