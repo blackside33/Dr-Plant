@@ -26,83 +26,220 @@ interface BeforeInstallPromptEvent extends Event {
 // How to Use Modal and its illustrations
 // This is being placed in App.tsx due to file creation constraints.
 const Step1Illustration: React.FC = () => (
-    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
-        <rect x="10" y="10" width="180" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        <text x="20" y="30" fontFamily="sans-serif" fontSize="8" fill="var(--color-primary)" fontWeight="bold">Upload Image</text>
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        <rect x="2" y="2" width="196" height="116" fill="#FFFFFF" rx="6" />
+        <text x="10" y="16" fontFamily="sans-serif" fontSize="8" fill="#89A1B0" fontWeight="bold">Upload Image</text>
         
-        <rect x="20" y="45" width="160" height="25" fill="var(--color-secondary)" rx="3" />
-        <text x="100" y="60" fontFamily="sans-serif" fontSize="8" fill="white" textAnchor="middle">Upload from Device</text>
+        {/* Upload Button */}
+        <rect x="20" y="30" width="160" height="25" fill="#D6DDE4" rx="3" />
+        <path d="M95 38 l-4-4m0 0L87 38m4-4v12" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <text x="110" y="44" fontFamily="sans-serif" fontSize="7" fill="white" >Upload</text>
         
-        <rect x="20" y="80" width="160" height="25" fill="var(--color-secondary)" rx="3" />
-        <text x="100" y="95" fontFamily="sans-serif" fontSize="8" fill="white" textAnchor="middle">Use Camera</text>
-
-        <path d="M120 40 C 130 30, 150 30, 160 40 L 165 45 L 155 45 Z" fill="var(--color-primary)" />
-        <circle cx="160" cy="57" r="10" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeDasharray="3 2" />
+        {/* Camera Button */}
+        <rect x="20" y="65" width="160" height="25" fill="#D6DDE4" rx="3" />
+        <path d="M88 72a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0195.07 67h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 00103.07 70H104a2 2 0 012 2v9a2 2 0 01-2 2H90a2 2 0 01-2-2V72z M99 78a3 3 0 11-6 0 3 3 0 016 0z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <text x="110" y="79" fontFamily="sans-serif" fontSize="7" fill="white" >Camera</text>
+        
+        {/* Animated cursor */}
+        <path d="M165 50 l -5 -5 l 0 -5 l 5 -5 l 5 5 l -5 5 v 10 z" fill="#89A1B0" style={{ animation: 'click-anim 1.5s infinite ease-in-out' }} />
+        <style>{`
+            @keyframes click-anim {
+                0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+                50% { transform: translateY(35px) scale(0.9); opacity: 0.9; }
+            }
+        `}</style>
     </svg>
 );
+
 
 const Step2Illustration: React.FC = () => (
-    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
-         <rect x="10" y="10" width="85" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-         <rect x="105" y="10" width="85" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        
-        <text x="115" y="25" fontFamily="sans-serif" fontSize="8" fill="var(--color-primary)">Image Ready</text>
-        <path d="M115 35 h 65 v 40 h -65 z" fill="#a2d2a2" />
-        <path d="M130 40 l 10 20 l -5 -5 z" fill="green" />
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        <rect x="2" y="2" width="196" height="116" fill="#FFFFFF" rx="6" />
+        <clipPath id="clip-step2"><rect x="2" y="2" width="196" height="116" rx="6"/></clipPath>
+        <g clipPath="url(#clip-step2)">
+            {/* Left side: Image Preview */}
+            <rect x="10" y="10" width="180" height="80" fill="#F7F9FB" rx="3" />
+            <path d="M40 30 L 60 15 L 80 40 L 90 30 L 110 50 L 20 50 Z" fill="#D6DDE4" />
+            <circle cx="80" cy="20" r="5" fill="#FBBF24" />
+            <text x="100" y="70" textAnchor="middle" fontFamily="sans-serif" fontSize="7" fill="#718096">Image is ready for analysis</text>
 
-        <rect x="20" y="80" width="65" height="20" fill="var(--color-primary)" rx="3"/>
-        <text x="52.5" y="92" fontFamily="sans-serif" fontSize="8" fill="white" textAnchor="middle">Analyze</text>
+            {/* Analyze Button */}
+            <rect x="10" y="95" width="180" height="25" fill="#89A1B0" rx="3" />
+            <text x="100" y="108" fontFamily="sans-serif" fontSize="8" fill="white" textAnchor="middle">Analyze Plant</text>
 
-        <path d="M90 90 L 105 90" stroke="var(--color-primary)" strokeWidth="2" markerEnd="url(#arrow)" />
-        <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-primary)" /></marker></defs>
+            {/* Loading overlay animation */}
+            <g style={{ animation: 'slide-in 2s infinite ease-in-out' }}>
+                <rect x="200" y="2" width="196" height="116" fill="rgba(255,255,255,0.9)" />
+                <circle cx="298" cy="45" r="10" stroke="#89A1B0" strokeWidth="2" fill="none" strokeDasharray="5" style={{ animation: 'spin 1.5s linear infinite' }}/>
+                <text x="298" y="70" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#89A1B0">Analyzing...</text>
+            </g>
+            <style>{`
+                @keyframes slide-in { 0% { transform: translateX(0); } 40% { transform: translateX(-200px); } 100% { transform: translateX(-200px); } }
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            `}</style>
+        </g>
     </svg>
 );
+
 
 const Step3Illustration: React.FC = () => (
-     <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
-        <rect x="10" y="10" width="180" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        <text x="100" y="25" fontFamily="sans-serif" fontSize="10" fill="var(--color-primary)" textAnchor="middle" fontWeight="bold">Analysis Report</text>
-        <rect x="20" y="35" width="160" height="10" fill="var(--color-secondary)" rx="2" />
-        <rect x="20" y="50" width="120" height="8" fill="#e0e0e0" rx="2" />
-        <rect x="20" y="62" width="160" height="10" fill="var(--color-secondary)" rx="2" />
-        <rect x="20" y="77" width="140" height="8" fill="#e0e0e0" rx="2" />
-        <rect x="20" y="90" width="160" height="10" fill="var(--color-primary)" rx="3" />
-        <text x="100" y="100" fontFamily="sans-serif" fontSize="6" fill="white" textAnchor="middle">Download PDF</text>
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        <rect x="2" y="2" width="196" height="116" fill="#FFFFFF" rx="6" />
+        <text x="100" y="15" fontFamily="sans-serif" fontSize="10" fill="#2D3748" textAnchor="middle" fontWeight="bold">Leaf Spot</text>
+        <rect x="20" y="22" width="160" height="20" fill="#F7F9FB" rx="3" />
+        <path d="M25 25 L 45 25" stroke="#38BDF8" strokeWidth="3" rx="1.5" />
+        <text x="160" y="32" textAnchor="end" fontFamily="sans-serif" fontSize="7" fill="#718096">Severity: 5/10</text>
+        
+        <rect x="20" y="50" width="160" height="25" fill="#F7F9FB" rx="3" />
+        <text x="25" y="60" fontFamily="sans-serif" fontSize="6" fill="#718096">Description</text>
+        <rect x="25" y="65" width="100" height="3" fill="#D6DDE4" rx="1.5" />
+
+        <rect x="20" y="80" width="160" height="25" fill="#F7F9FB" rx="3" />
+        <text x="25" y="90" fontFamily="sans-serif" fontSize="6" fill="#718096">Treatment</text>
+        <rect x="25" y="95" width="120" height="3" fill="#D6DDE4" rx="1.5" />
+        
+        {/* Animated line drawing */}
+        <style>{`@keyframes draw { to { stroke-dashoffset: 0; } }`}</style>
+        <path d="M10 50 v40" stroke="#89A1B0" strokeWidth="1" strokeDasharray="5 2" style={{ animation: 'draw 1.5s ease-out forwards', strokeDasharray: 40, strokeDashoffset: 40 }}/>
     </svg>
 );
 
-const Step4Illustration: React.FC = () => (
-    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
-        <rect x="10" y="10" width="85" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        <rect x="105" y="10" width="85" height="100" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
 
-        <text x="20" y="25" fontFamily="sans-serif" fontSize="8" fill="var(--color-primary)">History</text>
-        <rect x="20" y="35" width="65" height="20" fill="var(--color-primary)" opacity="0.1" rx="3" />
-        <rect x="25" y="40" width="10" height="10" fill="#a2d2a2" rx="2" />
-        <rect x="40" y="40" width="35" height="4" fill="#ccc" rx="1" />
-        <rect x="40" y="47" width="25" height="3" fill="#e0e0e0" rx="1" />
+const Step4Illustration: React.FC = () => (
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        <rect x="2" y="2" width="196" height="116" fill="#FFFFFF" rx="6" />
+        <text x="10" y="16" fontFamily="sans-serif" fontSize="8" fill="#89A1B0" fontWeight="bold">Analysis History</text>
         
-        <rect x="20" y="60" width="65" height="20" fill="#f0f0f0" rx="3" />
-        <rect x="20" y="85" width="65" height="20" fill="#f0f0f0" rx="3" />
+        {/* History Item 1 */}
+        <g style={{ animation: 'fade-in-item 0.5s 0s forwards', opacity: 0 }}>
+            <rect x="10" y="25" width="180" height="25" fill="#89A1B01A" rx="3" />
+            <rect x="15" y="28" width="19" height="19" fill="#a2d2a2" rx="2" />
+            <circle cx="42" cy="33" r="2" fill="#14b8a6" />
+            <text x="50" y="35" fontFamily="sans-serif" fontSize="7" fill="#2D3748">Healthy Plant</text>
+            <text x="50" y="44" fontFamily="sans-serif" fontSize="5" fill="#718096">Yesterday</text>
+        </g>
+        
+        {/* History Item 2 */}
+        <g style={{ animation: 'fade-in-item 0.5s 0.2s forwards', opacity: 0 }}>
+            <rect x="10" y="55" width="180" height="25" fill="#F7F9FB" rx="3" />
+            <rect x="15" y="58" width="19" height="19" fill="#fde047" rx="2" />
+            <circle cx="42" cy="63" r="2" fill="#38bdf8" />
+            <text x="50" y="65" fontFamily="sans-serif" fontSize="7" fill="#2D3748">Rust Fungus</text>
+            <text x="50" y="74" fontFamily="sans-serif" fontSize="5" fill="#718096">2 days ago</text>
+        </g>
+        
+        {/* History Item 3 */}
+        <g style={{ animation: 'fade-in-item 0.5s 0.4s forwards', opacity: 0 }}>
+            <rect x="10" y="85" width="180" height="25" fill="#F7F9FB" rx="3" />
+            <rect x="15" y="88" width="19" height="19" fill="#fca5a5" rx="2" />
+            <circle cx="42" cy="93" r="2" fill="#8b5cf6" />
+            <text x="50" y="95" fontFamily="sans-serif" fontSize="7" fill="#2D3748">Powdery Mildew</text>
+            <text x="50" y="104" fontFamily="sans-serif" fontSize="5" fill="#718096">5 days ago</text>
+        </g>
+        
+        <style>{`
+            @keyframes fade-in-item { to { opacity: 1; transform: translateX(0); } from { opacity: 0; transform: translateX(-10px); } }
+        `}</style>
     </svg>
 );
 
 const Step5Illustration: React.FC = () => (
-    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
-        <rect x="10" y="10" width="180" height="25" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        <text x="20" y="25" fontFamily="sans-serif" fontSize="8" fill="var(--color-primary)">Doctor Plant</text>
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        {/* Header */}
+        <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" transform="scale(0.5) translate(10, -5)" fill="#D6DDE4" />
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        <path d="M165 9a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 00165 13z" fill="#89A1B0" strokeWidth="1.5" />
+        <circle cx="178" cy="12" r="8" fill="none" stroke="#89A1B0" strokeWidth="1.5" style={{ animation: 'pulse-dot 2s infinite' }}/>
         
-        <circle cx="130" cy="22" r="8" fill="var(--color-primary)" opacity="0.2" />
-        <circle cx="150" cy="22" r="8" fill="var(--color-primary)" opacity="0.2" />
-        <circle cx="170" cy="22" r="8" fill="var(--color-primary)" opacity="0.2" />
-    
-        <path d="M110 30 C 110 20, 130 20, 130 30 L 135 35 L 125 35 Z" fill="var(--color-primary)" />
-        <circle cx="130" cy="22" r="12" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeDasharray="3 2" />
-
-        <rect x="10" y="45" width="180" height="65" fill="var(--card-bg-light)" stroke="var(--color-secondary)" rx="5" />
-        <text x="100" y="75" fontFamily="sans-serif" fontSize="10" fill="var(--color-primary)" textAnchor="middle">Weather & Tips</text>
+        {/* Modal */}
+        <rect x="20" y="30" width="160" height="85" fill="#FFFFFF" rx="5" stroke="#E5E7EB" />
+        <text x="30" y="45" fontFamily="sans-serif" fontSize="8" fill="#89A1B0" fontWeight="bold">Weather Forecast</text>
+        <text x="75" y="70" textAnchor="middle" fontFamily="sans-serif" fontSize="20" fill="#2D3748" fontWeight="bold">28°</text>
+        <path d="M110 55 a 10 10 0 0 1 0 20 h 20 a 10 10 0 0 1 0 -20 Z" fill="#FBBF24" />
+        <circle cx="105" cy="60" r="12" fill="#FBBF24" />
+        
+        <rect x="30" y="85" width="40" height="20" fill="#F7F9FB" rx="2" />
+        <text x="50" y="95" textAnchor="middle" fontFamily="sans-serif" fontSize="6">Mon</text>
+        <rect x="80" y="85" width="40" height="20" fill="#F7F9FB" rx="2" />
+        <text x="100" y="95" textAnchor="middle" fontFamily="sans-serif" fontSize="6">Tue</text>
+        <rect x="130" y="85" width="40" height="20" fill="#F7F9FB" rx="2" />
+        <text x="150" y="95" textAnchor="middle" fontFamily="sans-serif" fontSize="6">Wed</text>
+        
+        <style>{`@keyframes pulse-dot { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 1; } }`}</style>
     </svg>
 );
+
+
+const Step6Illustration: React.FC = () => (
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        {/* Header */}
+        <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" transform="scale(0.5) translate(10, -5)" fill="#D6DDE4" />
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        <path d="M185 18v-15m0 0c-3.125 0-5.25 2.625-5.25 5.25s2.125 5.25 5.25 5.25c3.125 0 5.25-2.625 5.25-5.25S188.125 3 185 3z M176 18h18" stroke="#89A1B0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <circle cx="185" cy="12" r="8" fill="none" stroke="#89A1B0" strokeWidth="1.5" style={{ animation: 'pulse-dot 2s infinite' }}/>
+        
+        {/* Modal */}
+        <rect x="20" y="30" width="160" height="85" fill="#FFFFFF" rx="5" stroke="#E5E7EB" />
+        <text x="30" y="45" fontFamily="sans-serif" fontSize="8" fill="#89A1B0" fontWeight="bold">Planting Tips</text>
+        
+        <rect x="30" y="55" width="140" height="22" fill="#F7F9FB" rx="3" />
+        <text x="35" y="65" fontFamily="sans-serif" fontSize="6" fill="#2D3748" fontWeight="bold">Tomatoes</text>
+        <rect x="35" y="69" width="80" height="2" fill="#D6DDE4" rx="1" />
+        
+        <rect x="30" y="82" width="140" height="22" fill="#F7F9FB" rx="3" />
+        <text x="35" y="92" fontFamily="sans-serif" fontSize="6" fill="#2D3748" fontWeight="bold">Mint</text>
+        <rect x="35" y="96" width="60" height="2" fill="#D6DDE4" rx="1" />
+        
+        <style>{`@keyframes pulse-dot { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 1; } }`}</style>
+    </svg>
+);
+
+
+const Step7Illustration: React.FC = () => (
+    <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+        {/* Header */}
+        <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        
+        {/* Theme Switch */}
+        <g transform="translate(155, 6)">
+            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" transform="scale(0.3)" fill="none" stroke="#89A1B0" strokeWidth="4" />
+        </g>
+        {/* Language Switch */}
+        <g transform="translate(175, 6)">
+            <rect x="0" y="0" width="18" height="12" rx="6" fill="#89A1B01A" />
+            <circle cx="6" cy="6" r="4" fill="#89A1B0" />
+            <text x="12.5" y="9" fontFamily="sans-serif" fontSize="5" fill="#718096">ع</text>
+        </g>
+        
+        {/* Light Mode Preview */}
+        <rect x="10" y="30" width="85" height="80" fill="#F7F9FB" rx="5" stroke="#E5E7EB" />
+        <rect x="18" y="38" width="70" height="15" fill="#FFFFFF" rx="2" />
+        <rect x="18" y="58" width="70" height="45" fill="#FFFFFF" rx="2" />
+        
+        {/* Dark Mode Preview */}
+        <rect x="105" y="30" width="85" height="80" fill="#2D3748" rx="5" stroke="#4A5568" />
+        <rect x="113" y="38" width="70" height="15" fill="#4A5568" rx="2" />
+        <rect x="113" y="58" width="70" height="45" fill="#4A5568" rx="2" />
+        
+        {/* Animated toggle */}
+        <g transform="translate(175, 6)" style={{ animation: 'toggle-anim 3s infinite ease-in-out' }}>
+            <rect x="0" y="0" width="18" height="12" rx="6" fill="#89A1B01A" />
+            <circle cx="12" cy="6" r="4" fill="#89A1B0" />
+            <text x="4.5" y="9" fontFamily="sans-serif" fontSize="5" fill="#718096">EN</text>
+        </g>
+        
+        <style>{`
+            @keyframes toggle-anim {
+                0%, 40% { transform: translate(175px, 6px); }
+                60%, 100% { transform: translate(175px, 6px) translateX(-11px); }
+            }
+        `}</style>
+    </svg>
+);
+
 
 const steps = [
     { titleKey: 'howToUseStep1Title', descriptionKey: 'howToUseStep1Desc', Illustration: Step1Illustration },
@@ -110,6 +247,8 @@ const steps = [
     { titleKey: 'howToUseStep3Title', descriptionKey: 'howToUseStep3Desc', Illustration: Step3Illustration },
     { titleKey: 'howToUseStep4Title', descriptionKey: 'howToUseStep4Desc', Illustration: Step4Illustration },
     { titleKey: 'howToUseStep5Title', descriptionKey: 'howToUseStep5Desc', Illustration: Step5Illustration },
+    { titleKey: 'howToUseStep6Title', descriptionKey: 'howToUseStep6Desc', Illustration: Step6Illustration },
+    { titleKey: 'howToUseStep7Title', descriptionKey: 'howToUseStep7Desc', Illustration: Step7Illustration },
 ];
 
 interface HowToUseModalProps {

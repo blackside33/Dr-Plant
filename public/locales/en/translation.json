@@ -93,6 +93,10 @@
     "howToUseStep3Desc": "Review the detailed report, including the diagnosis, severity level, and tailored treatment recommendations for Jordan.",
     "howToUseStep4Title": "Step 4: Check History",
     "howToUseStep4Desc": "All your analyses are automatically saved. You can revisit, download, or delete them from the history panel at any time.",
-    "howToUseStep5Title": "Step 5: Use Extra Tools",
-    "howToUseStep5Desc": "Click the icons in the header to get local weather forecasts and seasonal agricultural tips to help you plan."
+    "howToUseStep5Title": "Step 5: Get Weather Forecasts",
+    "howToUseStep5Desc": "Click the cloud icon in the header to get real-time weather conditions and a 3-day forecast, helping you better care for your plants.",
+    "howToUseStep6Title": "Step 6: Discover Planting Tips",
+    "howToUseStep6Desc": "Click the seedling icon to receive expert agricultural suggestions tailored to your region and the current season, for both crops and ornamental plants.",
+    "howToUseStep7Title": "Step 7: Customize Your View",
+    "howToUseStep7Desc": "Use the switches in the header to toggle between light and dark themes or change the application language for your comfort and preference."
 }
