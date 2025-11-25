@@ -470,7 +470,9 @@ function App() {
 
   const isInStandaloneMode = useCallback(() => {
       if (typeof window === 'undefined') return false;
-      return ('standalone' in window.navigator) && ((window.navigator as any).standalone === true)
+      const isPwaStandalone = ('standalone' in window.navigator) && ((window.navigator as any).standalone === true);
+      const isCapacitorNative = (window as any).Capacitor?.isNativePlatform();
+      return isPwaStandalone || isCapacitorNative;
   }, []);
 
 
