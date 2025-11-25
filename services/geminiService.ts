@@ -145,7 +145,8 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
       },
     });
 
-    const jsonString = extractJson(response.text);
+    const text = response.text || '';
+    const jsonString = extractJson(text);
     if (!jsonString) {
       throw new Error("Received empty response text from Gemini.");
     }
@@ -235,7 +236,8 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
                 tools: [{googleSearch: {}}],
             },
         });
-        const jsonString = extractJson(response.text);
+        const text = response.text || '';
+        const jsonString = extractJson(text);
         const parsedResponse: WeatherData = JSON.parse(jsonString);
         return parsedResponse;
     } catch (error) {
@@ -289,7 +291,8 @@ export const getAgriculturalTips = async (location: LocationQuery, language: str
             },
         });
 
-        const jsonString = extractJson(response.text);
+        const text = response.text || '';
+        const jsonString = extractJson(text);
         const parsedResponse: AgriculturalTipsData = JSON.parse(jsonString);
         return parsedResponse;
     } catch (error) {
