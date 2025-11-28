@@ -17,6 +17,7 @@ const extractJson = (text: string): string => {
 export interface AnalysisResponse {
   isPlant: boolean;
   isArtificialPlant: boolean;
+  isInsect: boolean;
   disease: string;
   diseaseClassification: string;
   description: string;
@@ -36,49 +37,53 @@ export interface LocationQuery {
 const getPrompt = (language: string): string => {
     if (language === 'ar') {
         return `
-مهمتك هي تحليل صورة وتقديم تشخيص وخطة علاج مفصلة إذا كانت الصورة لنبات حقيقي. أنت خبير في أمراض النباتات ولديك معرفة متخصصة بالزراعة في الأردن.
-**بشكل حاسم، يجب عليك دائمًا تقديم استجابة JSON صالحة بناءً على المخطط، حتى لو كانت الصورة ليست لنبات، أو كانت لنبات صناعي، أو كانت جودة الصورة رديئة.**
+مهمتك هي تحليل صورة وتقديم تشخيص وخطة علاج مفصلة. أنت خبير في أمراض النباتات وعلم الحشرات الزراعية ولديك معرفة متخصصة بالزراعة في الأردن.
+يمكن للصورة أن تكون لنبات مصاب بمرض، أو لصورة حشرة/آفة زراعية تؤذي النباتات.
+
+**بشكل حاسم، يجب عليك دائمًا تقديم استجابة JSON صالحة بناءً على المخطط، حتى لو كانت الصورة ليست لنبات/حشرة، أو كانت جودة الصورة رديئة.**
 
 بناءً على الصورة المقدمة، قدم المعلومات التالية بتنسيق JSON منظم. لا تقم بتضمين أي نص أو تفسيرات أو تنسيق markdown خارج بنية JSON. يجب أن تكون جميع القيم النصية باللغة العربية.
 
-يجب أن يحتوي كائن JSON على المفاتيح التالية: "isPlant", "isArtificialPlant", "disease" , "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription"، "imageQualityScore"، "imageQualityDescription".
+يجب أن يحتوي كائن JSON على المفاتيح التالية: "isPlant", "isArtificialPlant", "isInsect", "disease" , "diseaseClassification"، "description" ، "treatments" ، "severityLevel" ، "severityDescription"، "imageQualityScore"، "imageQualityDescription".
 
-1.  "isPlant": قيمة منطقية (boolean). اضبطها على \`true\` إذا كان الموضوع الرئيسي في الصورة هو نبات، ورقة، زهرة، أو شجرة. وإلا، اضبطها على \`false\`.
-2.  "isArtificialPlant": قيمة منطقية (boolean). اضبطها على \`true\` إذا كنت واثقًا من أن النبات المعروض صناعي أو مزيف أو بلاستيكي. اضبطها على \`false\` إذا كان نباتًا حقيقيًا حيًا. إذا كانت "isPlant" قيمتها \`false\`, يجب أن تكون هذه القيمة \`false\` أيضًا.
-3.  "disease": سلسلة نصية تحدد اسم المرض. إذا كان "isPlant" قيمتها \`false\`, استخدم "ليست صورة نبات". إذا كان "isArtificialPlant" قيمتها \`true\`, استخدم "نبات صناعي". إذا كان النبات سليمًا، اذكر "نبات سليم". إذا لم تتمكن من تحديد المرض، اذكر "غير محدد".
-4.  "diseaseClassification": سلسلة نصية تصنف المرض (مثل "فطري", "بكتيري"). إذا كان "isPlant" قيمتها \`false\` أو "isArtificialPlant" قيمتها \`true\`, استخدم "غير قابل للتطبيق".
-5.  "description": وصف موجز. إذا كانت ليست نباتًا أو كانت نباتًا صناعيًا، فاذكر ذلك بوضوح هنا. خلاف ذلك، صف المرض باستخدام نقاط.
-6.  "treatments": مصفوفة من كائنات العلاج. إذا كانت ليست نباتًا، أو كانت نباتًا صناعيًا، أو كان النبات سليمًا، يجب أن تكون هذه المصفوفة فارغة أو تحتوي على نصائح عامة.
-    *   بالنسبة لـ "description"، استخدم تنسيق قائمة مرقمة (على سبيل المثال، "1. الخطوة الأولى\\n2. الخطوة الثانية").
-    *   بالنسبة للعلاجات "الكيميائية"، تكون مصفوفة "suggestedProducts" إلزامية للأمراض المحددة. يجب أن تحتوي على ما لا يقل عن 2-3 كائنات، لكل منها "name" و "scientificName" و "activeIngredient" للمنتجات المتوفرة في الأردن.
-7.  "severityLevel": عدد صحيح من 1 إلى 10. إذا كانت ليست نباتًا أو كانت نباتًا صناعيًا، استخدم 0. إذا كان سليمًا، استخدم 1.
-8.  "severityDescription": سلسلة نصية تبرر درجة الخطورة.
-9.  "imageQualityScore": عدد صحيح من 1 إلى 10 يقيم جودة الصورة (التركيز، الإضاءة، الوضوح).
-10. "imageQualityDescription": سلسلة نصية تبرر درجة جودة الصورة.
+1.  "isPlant": قيمة منطقية. اضبطها على \`true\` إذا كانت الصورة تحتوي على نبات، ورقة، زهرة، أو شجرة. **استثناء:** إذا كانت الصورة تحتوي على حشرة زراعية واضحة (حتى لو لم يكن النبات واضحًا تمامًا)، اضبط هذا أيضًا على \`true\` لأننا نريد تحليلها.
+2.  "isArtificialPlant": قيمة منطقية. \`true\` إذا كان النبات صناعي/بلاستيكي. خلاف ذلك \`false\`.
+3.  "isInsect": قيمة منطقية. اضبطها على \`true\` إذا كان الموضوع الرئيسي للصورة أو سبب المشكلة هو حشرة أو آفة زراعية (مثل المن، الديدان، الخنافس، العث). خلاف ذلك \`false\`.
+4.  "disease": سلسلة نصية. اسم المرض أو اسم الحشرة/الآفة. إذا لم تكن صورة نبات ولا حشرة، اكتب "ليست صورة نبات أو حشرة". إذا كان نباتًا سليمًا، اكتب "نبات سليم".
+5.  "diseaseClassification": تصنيف المرض (مثل "فطري", "بكتيري", "فيروسي"). **إذا كانت "isInsect" تساوي true، يجب أن يكون التصنيف "حشرة" أو "آفة".**
+6.  "description": وصف موجز للمشكلة أو الحشرة.
+7.  "treatments": مصفوفة نصائح العلاج. بالنسبة للحشرات، اقترح مبيدات حشرية أو طرق مكافحة مناسبة للسوق الأردني.
+    *   "suggestedProducts" يجب أن تحتوي على منتجات متوفرة في الأردن (الاسم التجاري، الاسم العلمي، المادة الفعالة).
+8.  "severityLevel": من 1 إلى 10.
+9.  "severityDescription": تبرير درجة الخطورة.
+10. "imageQualityScore": من 1 إلى 10.
+11. "imageQualityDescription": تبرير جودة الصورة.
 `;
     }
 
     // Default to English
     return `
-Your task is to analyze an image and provide a detailed diagnosis and treatment plan if the image is of a real plant. You are an expert plant pathologist with specialized knowledge of agriculture in Jordan.
-**Crucially, you must always provide a valid JSON response based on the schema, even if the image is not of a plant, is of an artificial plant, or the image quality is poor.**
+Your task is to analyze an image and provide a detailed diagnosis and treatment plan. You are an expert plant pathologist and agricultural entomologist with specialized knowledge of agriculture in Jordan.
+The image can be of a plant disease OR an agricultural insect/pest that harms plants.
 
-Based on the provided image, provide the following information in a structured JSON format. Do not include any text, explanations, or markdown formatting outside of the JSON structure. All text values in the JSON should be in English.
+**Crucially, you must always provide a valid JSON response based on the schema.**
 
-The JSON object must have the following keys: "isPlant", "isArtificialPlant", "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription", "imageQualityScore", "imageQualityDescription".
+Based on the provided image, provide the following information in a structured JSON format. Do not include any text outside of the JSON structure. All text values in the JSON should be in English.
 
-1.  "isPlant": A boolean value. Set to \`true\` if the main subject of the image is a plant, leaf, flower, or tree. Otherwise, set to \`false\`.
-2.  "isArtificialPlant": A boolean value. Set to \`true\` if you are confident the plant shown is artificial, fake, or plastic. Set to \`false\` if it is a real, living plant. If "isPlant" is false, this should also be false.
-3.  "disease": A string identifying the disease. If "isPlant" is \`false\`, use "Not a plant image". If "isArtificialPlant" is \`true\`, use "Artificial Plant". If the plant appears healthy, state "Healthy Plant". If undetermined, state "Undetermined".
-4.  "diseaseClassification": A string classifying the disease (e.g., "Fungal", "Bacterial"). If "isPlant" is \`false\` or "isArtificialPlant" is \`true\`, use "Not Applicable".
-5.  "description": A concise description. If not a plant or an artificial plant, state that clearly here. Otherwise, describe the disease using bullet points.
-6.  "treatments": An array of treatment objects. If not a plant, an artificial plant, or a healthy plant, this array should be empty or contain general advice.
-    *   For "description", use a numbered list format (e.g., "1. First step\\n2. Second step").
-    *   For "Chemical" treatments, the "suggestedProducts" array is mandatory for specific diseases. It must contain at least 2-3 objects, each with "name", "scientificName", and "activeIngredient" for products in Jordan.
-7.  "severityLevel": An integer from 1 to 10. If not a plant or an artificial plant, use 0. If healthy, use 1.
-8.  "severityDescription": A string justifying the severity score.
-9.  "imageQualityScore": An integer from 1 to 10 rating the image quality (focus, lighting, clarity).
-10. "imageQualityDescription": A string justifying the image quality score.
+The JSON object must have the following keys: "isPlant", "isArtificialPlant", "isInsect", "disease", "diseaseClassification", "description", "treatments", "severityLevel", "severityDescription", "imageQualityScore", "imageQualityDescription".
+
+1.  "isPlant": Boolean. Set to \`true\` if the image contains a plant, leaf, flower, or tree. **Exception:** If the image clearly shows an agricultural insect/pest (even if the plant isn't fully clear), set this to \`true\` as we want to analyze it.
+2.  "isArtificialPlant": Boolean. \`true\` if artificial/fake. Else \`false\`.
+3.  "isInsect": Boolean. Set to \`true\` if the main subject or the cause of the issue is an insect or agricultural pest (e.g., aphids, worms, beetles, mites). Otherwise \`false\`.
+4.  "disease": String. The name of the disease OR the name of the insect/pest. If not a plant/insect, use "Not a plant or insect image". If healthy, "Healthy Plant".
+5.  "diseaseClassification": String. (e.g., "Fungal", "Bacterial"). **If "isInsect" is true, this MUST be "Insect" or "Pest".**
+6.  "description": Concise description of the disease or insect.
+7.  "treatments": Array of treatments. For insects, suggest insecticides or control methods suitable for the Jordanian market.
+    *   "suggestedProducts" must contain products available in Jordan.
+8.  "severityLevel": 1 to 10.
+9.  "severityDescription": Justification for severity.
+10. "imageQualityScore": 1 to 10.
+11. "imageQualityDescription": Justification for image quality.
 `;
 };
 
@@ -109,6 +114,7 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
           properties: {
             isPlant: { type: Type.BOOLEAN },
             isArtificialPlant: { type: Type.BOOLEAN },
+            isInsect: { type: Type.BOOLEAN },
             disease: { type: Type.STRING },
             diseaseClassification: { type: Type.STRING },
             description: { type: Type.STRING },
@@ -140,7 +146,7 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
             imageQualityScore: { type: Type.INTEGER },
             imageQualityDescription: { type: Type.STRING },
           },
-          required: ['isPlant', 'isArtificialPlant', 'disease', 'diseaseClassification', 'description', 'treatments', 'severityLevel', 'severityDescription', 'imageQualityScore', 'imageQualityDescription'],
+          required: ['isPlant', 'isArtificialPlant', 'isInsect', 'disease', 'diseaseClassification', 'description', 'treatments', 'severityLevel', 'severityDescription', 'imageQualityScore', 'imageQualityDescription'],
         }
       },
     });
@@ -165,31 +171,33 @@ export const analyzePlantImage = async (base64Image: string, mimeType: string, l
         }
     }
     
+    // Fallback error objects
+    const baseError = {
+        isPlant: false,
+        isArtificialPlant: false,
+        isInsect: false,
+        treatments: [],
+        severityLevel: 0,
+        imageQualityScore: 1,
+    };
+
     if (language === 'ar') {
         return {
-            isPlant: false,
-            isArtificialPlant: false,
+            ...baseError,
             disease: "فشل التحليل",
             diseaseClassification: "خطأ",
             description: "لم نتمكن من تحليل هذه الصورة. قد يكون هذا بسبب مشكلة في الشبكة، أو قد تكون الصورة غير قابلة للتمييز على الإطلاق.",
-            treatments: [],
-            severityLevel: 0,
             severityDescription: "تعذر التحديد.",
-            imageQualityScore: 1,
             imageQualityDescription: "فشل التحليل، لذلك لا يمكن تقييم جودة الصورة."
         };
     }
 
     return {
-        isPlant: false,
-        isArtificialPlant: false,
+        ...baseError,
         disease: "Analysis Failed",
         diseaseClassification: "Error",
         description: "We were unable to analyze this image. This might be due to a network issue, or the image may be completely unidentifiable.",
-        treatments: [],
-        severityLevel: 0,
         severityDescription: "Could not be determined.",
-        imageQualityScore: 1,
         imageQualityDescription: "Analysis failed, so image quality could not be assessed."
     };
   }

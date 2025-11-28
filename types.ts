@@ -25,6 +25,7 @@ export interface AnalysisResultData {
   language: string;
   imageQualityScore: number;
   imageQualityDescription: string;
+  isInsect?: boolean;
 }
 
 export interface ForecastDay {

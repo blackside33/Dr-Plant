@@ -120,3 +120,9 @@ export const QuestionMarkCircleIcon: React.FC<{ className?: string }> = ({ class
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
     </svg>
 );
+
+export const BugIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75M12 8.25a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5zm-6 2.25l-2.625 2.625m14.625-2.625l2.625 2.625M4.5 15.75l-2.25 2.25m19.5-2.25l-2.25 2.25" />
+    </svg>
+);

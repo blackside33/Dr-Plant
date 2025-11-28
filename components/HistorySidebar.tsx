@@ -5,7 +5,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
 import AnalysisReport from './AnalysisReport'; 
-import { DownloadIcon } from './icons';
+import { DownloadIcon, BugIcon } from './icons';
 
 interface HistorySidebarProps {
   analyses: AnalysisResultData[];
@@ -145,6 +145,7 @@ export const HistorySidebar: React.FC<HistorySidebarProps> = ({ analyses, onSele
                     <img src={analysis.imageUrl} alt={analysis.disease} className="w-16 h-16 object-cover rounded-md flex-shrink-0" />
                     <div className="overflow-hidden">
                         <div className="flex items-center gap-2">
+                             {analysis.isInsect && <BugIcon className="w-3 h-3 text-red-500 flex-shrink-0" />}
                             <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
                                 analysis.severityLevel <= 3 ? 'bg-teal-500' : analysis.severityLevel <= 7 ? 'bg-sky-500' : 'bg-violet-500'
                             }`}></div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnalysisResultData } from '../types';
 import { TreatmentCard } from './TreatmentCard';
+import { BugIcon } from './icons';
 
 interface AnalysisReportProps {
     analysis: AnalysisResultData;
@@ -21,6 +22,14 @@ const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ 
 
                 {/* Disease Title and Date */}
                 <div className="text-center mb-8 border-b-2 border-[var(--color-secondary)]/30 pb-4">
+                    {analysis.isInsect && (
+                        <div className="flex justify-center mb-2">
+                            <span className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2">
+                                <BugIcon className="w-4 h-4" />
+                                {t('insectDetected')}
+                            </span>
+                        </div>
+                    )}
                     <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{analysis.disease}</h2>
                     <p className="text-sm text-[var(--text-muted-light)] dark:text-[var(--text-muted-dark)] mt-2">{t('analyzedOn', { date: new Date(analysis.timestamp).toLocaleString(i18n.language) })}</p>
                 </div>
@@ -37,7 +46,9 @@ const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ 
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t('severityLevel')}</h3>
                                 <div className="text-right rtl:text-left">
                                     <p className="text-xs font-semibold text-[var(--text-muted-light)] dark:text-[var(--text-muted-dark)] mb-1">{t('diseaseClassification')}</p>
-                                    <span className="text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2.5 py-1 rounded-full">{analysis.diseaseClassification}</span>
+                                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${analysis.isInsect ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'}`}>
+                                        {analysis.diseaseClassification}
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 mb-2">
