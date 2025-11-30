@@ -10,8 +10,9 @@ export default defineConfig(({ mode }) => {
     base: './',
     define: {
       // هذا السطر ضروري جداً لكي يعمل process.env.API_KEY داخل المتصفح والتطبيق
-      // يقوم باستبدال المتغير بقيمته الفعلية أثناء البناء
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY)
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY),
+      // تعريف process.env بشكل عام لتجنب خطأ "process is not defined"
+      'process.env': {}
     },
     build: {
       outDir: 'dist',
