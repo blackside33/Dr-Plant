@@ -1,9 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
-import { LeafIcon, DownloadIcon, JordanianSpinner } from './icons';
+import { LeafIcon, JordanianSpinner } from './icons';
 import { AnalysisReport } from './AnalysisReport';
 
 const Spinner: React.FC<{ messageKey: string }> = ({ messageKey }) => {
@@ -38,73 +36,6 @@ interface AnalysisDisplayProps {
 
 export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLoading, error, imagePreview, loadingMessageKey }) => {
   const { t } = useTranslation();
-  const analysisContentRef = useRef<HTMLDivElement>(null);
-
-  const handleDownloadPdf = async () => {
-    const contentToCapture = analysisContentRef.current;
-    if (!contentToCapture || !analysis) return;
-
-    // Use a clone to avoid modifying the on-screen element
-    const captureElement = contentToCapture.cloneNode(true) as HTMLElement;
-    captureElement.classList.remove('dark');
-    document.body.appendChild(captureElement);
-    
-    // Explicitly set light theme styles for PDF generation
-    captureElement.style.backgroundColor = '#FFFFFF';
-    const allElements = captureElement.querySelectorAll('*');
-    allElements.forEach((el) => {
-        (el as HTMLElement).style.color = '#000000';
-    });
-    
-    const imageElement = captureElement.querySelector('img[alt="Analyzed plant"]') as HTMLElement | null;
-    if (imageElement) {
-        imageElement.style.width = '70%';
-        imageElement.style.margin = '0 auto 2rem auto'; 
-    }
-
-    const cards = captureElement.querySelectorAll('.pdf-card');
-    cards.forEach(card => {
-        (card as HTMLElement).style.backgroundColor = '#F9FAFB'; // A light gray for cards
-        (card as HTMLElement).style.border = '1px solid #E5E7EB';
-    });
-
-
-    const canvas = await html2canvas(captureElement, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-    });
-    
-    document.body.removeChild(captureElement); // Clean up the cloned element
-    
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 5; // 0.5 cm
-    const availableWidth = pageWidth - (margin * 2);
-    const availableHeight = pageHeight - (margin * 2);
-
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    const canvasRatio = canvasWidth / canvasHeight;
-
-    let pdfImageWidth = availableWidth;
-    let pdfImageHeight = pdfImageWidth / canvasRatio;
-
-    if (pdfImageHeight > availableHeight) {
-        pdfImageHeight = availableHeight;
-        pdfImageWidth = pdfImageHeight * canvasRatio;
-    }
-    
-    const x = (pageWidth - pdfImageWidth) / 2;
-    const y = (pageHeight - pdfImageHeight) / 2;
-
-    pdf.addImage(imgData, 'PNG', x, y, pdfImageWidth, pdfImageHeight);
-    
-    pdf.save(`plant-analysis-${analysis.disease.replace(/\s+/g, '-')}.pdf`);
-  };
   
   return (
     <div className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] p-6 rounded-xl shadow-lg border border-black/5 dark:border-white/5 h-full overflow-y-auto">
@@ -126,16 +57,7 @@ export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ analysis, isLo
 
         {!isLoading && !error && analysis && (
           <div className="w-full">
-            <AnalysisReport ref={analysisContentRef} analysis={analysis} />
-            <div className="mt-6 text-center">
-              <button
-                onClick={handleDownloadPdf}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
-              >
-                <DownloadIcon className="w-5 h-5 me-2" />
-                {t('downloadPDF')}
-              </button>
-            </div>
+            <AnalysisReport analysis={analysis} />
           </div>
         )}
       </div>
