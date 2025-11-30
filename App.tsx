@@ -361,7 +361,7 @@ const Header: React.FC<{
             <div className="flex items-center">
               <LeafIcon className="w-8 h-8 md:w-10 md:h-10 text-[var(--color-secondary)] me-2 md:me-3 flex-shrink-0" />
               <div>
-                <h1 className="text-base md:text-2xl font-bold text-[var(--color-primary)] tracking-wider">{t('headerTitle')}</h1>
+                <h1 className="text-sm md:text-2xl font-bold text-[var(--color-primary)] tracking-wider">{t('headerTitle')}</h1>
                 <p className="text-xs md:text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('headerSubtitle')}</p>
               </div>
             </div>
