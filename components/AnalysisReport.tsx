@@ -106,7 +106,6 @@ export const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportPro
                     </div>
                 )}
             </div>
-        </div>
     );
 });
 
