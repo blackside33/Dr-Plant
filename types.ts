@@ -42,6 +42,10 @@ export interface WeatherData {
   wind_speed: number;
   agricultural_summary: string;
   forecast: ForecastDay[];
+  coordinates: {
+    lat: number;
+    lon: number;
+  };
 }
 
 export interface PlantSuggestion {

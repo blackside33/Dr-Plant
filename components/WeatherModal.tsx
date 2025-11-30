@@ -31,7 +31,7 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
             aria-labelledby="weather-modal-title"
         >
             <div 
-                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-lg text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border border-black/5 dark:border-white/10"
+                className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] rounded-2xl shadow-2xl w-full max-w-4xl text-[var(--text-light)] dark:text-[var(--text-dark)] transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale border border-black/5 dark:border-white/10 max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
                 style={{ animation: 'fade-in-scale 0.3s forwards' }}
             >
@@ -87,15 +87,30 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                             {/* Current Conditions */}
                             <div>
                                 <h3 className="text-lg font-semibold mb-2">{t('currentConditions')}</h3>
-                                <div className="bg-gray-500/10 p-4 rounded-lg flex justify-between items-center">
+                                <div className="bg-gray-500/10 p-4 rounded-lg flex flex-wrap justify-between items-center gap-4">
                                     <div>
-                                        <p className="text-5xl font-bold">{Math.round(data.current_temp)}°C</p>
-                                        <p className="text-gray-600 dark:text-gray-300">{data.condition}</p>
+                                        <p className="text-5xl font-bold text-[var(--color-primary)]">{Math.round(data.current_temp)}°C</p>
+                                        <p className="text-gray-600 dark:text-gray-300 text-lg">{data.condition}</p>
                                     </div>
                                     <div className="text-right rtl:text-left text-sm space-y-1">
-                                        <p>{t('humidity')}: {data.humidity}%</p>
-                                        <p>{t('windSpeed')}: {data.wind_speed} km/h</p>
+                                        <p><span className="font-semibold">{t('humidity')}:</span> {data.humidity}%</p>
+                                        <p><span className="font-semibold">{t('windSpeed')}:</span> {data.wind_speed} km/h</p>
                                     </div>
+                                </div>
+                            </div>
+                            
+                            {/* Satellite Map */}
+                             <div>
+                                <h3 className="text-lg font-semibold mb-2">{t('satelliteMap')}</h3>
+                                <div className="w-full h-[300px] rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-inner">
+                                    <iframe 
+                                        width="100%" 
+                                        height="300" 
+                                        src={`https://embed.windy.com/embed2.html?lat=${data.coordinates?.lat}&lon=${data.coordinates?.lon}&detailLat=${data.coordinates?.lat}&detailLon=${data.coordinates?.lon}&width=650&height=450&zoom=5&level=surface&overlay=satellite&product=satellite&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1`} 
+                                        frameBorder="0"
+                                        title="Windy Satellite Map"
+                                        className="w-full h-full"
+                                    ></iframe>
                                 </div>
                             </div>
 
@@ -106,19 +121,19 @@ export const WeatherModal: React.FC<WeatherModalProps> = ({ isOpen, onClose, isL
                                     {t('agriculturalTip')}
                                 </h3>
                                 <div className="bg-teal-50 dark:bg-teal-900/50 border-l-4 border-teal-500 p-4 rounded-r-lg">
-                                    <p className="text-sm text-teal-800 dark:text-teal-200">{data.agricultural_summary}</p>
+                                    <p className="text-sm text-teal-800 dark:text-teal-200 leading-relaxed">{data.agricultural_summary}</p>
                                 </div>
                             </div>
                             
                             {/* Forecast */}
                             <div>
-                                <h3 className="text-lg font-semibold mb-2">{t('forecast')}</h3>
-                                <div className="grid grid-cols-3 gap-3">
+                                <h3 className="text-lg font-semibold mb-3">{t('forecast')}</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                                     {data.forecast.map((day, index) => (
-                                        <div key={index} className="bg-gray-500/10 p-3 rounded-lg text-center">
-                                            <p className="font-bold">{day.day}</p>
-                                            <p className="text-lg">{Math.round(day.max_temp)}° / {Math.round(day.min_temp)}°</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">{day.condition}</p>
+                                        <div key={index} className="bg-gray-500/10 p-3 rounded-lg text-center hover:bg-gray-500/20 transition-colors">
+                                            <p className="font-bold text-sm mb-1">{day.day}</p>
+                                            <p className="text-lg font-semibold text-[var(--color-primary)]">{Math.round(day.max_temp)}° / {Math.round(day.min_temp)}°</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 min-h-[2.5em]">{day.condition}</p>
                                         </div>
                                     ))}
                                 </div>

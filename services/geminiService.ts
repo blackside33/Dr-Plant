@@ -229,7 +229,8 @@ export const getWeatherForecast = async (location: LocationQuery, language: stri
         3. "humidity": A number representing the current humidity percentage.
         4. "wind_speed": A number representing the current wind speed in kilometers per hour (km/h).
         5. "agricultural_summary": A brief, simple, and helpful summary for farmers based on the current weather and short-term forecast.
-        6. "forecast": An array of exactly 3 objects, representing the forecast for the next three days. Each object must have:
+        6. "coordinates": An object with "lat" and "lon" keys (numbers) representing the exact latitude and longitude of the location found.
+        7. "forecast": An array of exactly 10 objects, representing the forecast for the next 10 days. Each object must have:
             - "day": The name of the day (e.g., "Monday", "Tuesday").
             - "min_temp": The minimum forecasted temperature in Celsius.
             - "max_temp": The maximum forecasted temperature in Celsius.
