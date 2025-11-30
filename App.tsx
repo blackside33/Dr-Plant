@@ -359,7 +359,7 @@ const Header: React.FC<{
         <header className="bg-[var(--card-bg-light)] dark:bg-[var(--card-bg-dark)] shadow-sm p-4 mb-8">
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center">
-              <LeafIcon className="w-8 h-8 md:w-10 md:h-10 text-[var(--color-secondary)] me-2 md:me-3 flex-shrink-0" />
+              <LeafIcon className="w-4 h-4 md:w-10 md:h-10 text-[var(--color-secondary)] me-2 md:me-3 flex-shrink-0" />
               <div>
                 <h1 className="text-lg md:text-2xl font-bold text-[var(--color-primary)] tracking-wider">{t('headerTitle')}</h1>
                 <p className="text-xs md:text-sm text-gray-500 dark:text-[var(--text-muted-dark)]">{t('headerSubtitle')}</p>
