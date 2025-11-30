@@ -1,12 +1,11 @@
-const CACHE_NAME = 'dr-plant-v1.3';
+const CACHE_NAME = 'dr-plant-v1.4';
 const URLS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/index.tsx',
-  '/locales/en/translation.json',
-  '/locales/ar/translation.json',
-  '/icon.svg',
-  '/manifest.json'
+  './',
+  './index.html',
+  './locales/en/translation.json',
+  './locales/ar/translation.json',
+  './icon.svg',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
@@ -26,7 +25,7 @@ self.addEventListener('fetch', event => {
 
     if (event.request.mode === 'navigate') {
         event.respondWith(
-            fetch(event.request).catch(() => caches.match('/index.html'))
+            fetch(event.request).catch(() => caches.match('./index.html'))
         );
         return;
     }
@@ -57,4 +56,11 @@ self.addEventListener('activate', event => {
       );
     })
   );
+});
+
+// Listen for the "skipWaiting" message to force the waiting service worker to become active
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });

@@ -12,6 +12,7 @@ import { WeatherModal } from './components/WeatherModal';
 import { InstallPwaModal } from './components/InstallPwaModal';
 import { Footer } from './components/Footer';
 import { AgriculturalTipsModal } from './components/AgriculturalTipsModal';
+import { UpdateNotification } from './components/UpdateNotification';
 
 // BeforeInstallPromptEvent is not a standard TS type, so we define it.
 interface BeforeInstallPromptEvent extends Event {
@@ -790,6 +791,7 @@ function App() {
 
   return (
     <div className={`min-h-screen text-[var(--text-light)] dark:text-[var(--text-dark)] app-container ${getAppBgClass()}`}>
+      <UpdateNotification />
       <Header onWeatherClick={handleWeatherClick} onTipsClick={handleAgriculturalTipsClick} onHowToUseClick={() => setIsHowToUseModalOpen(true)} theme={theme} onThemeChange={setTheme} />
       <main className="container mx-auto px-4 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-120px)]">

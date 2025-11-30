@@ -99,5 +99,9 @@
     "howToUseStep6Desc": "Click the seedling icon to receive expert agricultural suggestions tailored to your region and the current season, for both crops and ornamental plants.",
     "howToUseStep7Title": "Step 7: Customize Your View",
     "howToUseStep7Desc": "Use the switches in the header to toggle between light and dark themes or change the application language for your comfort and preference.",
-    "insectDetected": "Pest Detected"
+    "insectDetected": "Pest Detected",
+    "updateAvailableTitle": "Update Available",
+    "updateAvailableBody": "A new version of Dr Plant is available.",
+    "updateNow": "Update Now",
+    "updateDismiss": "Later"
 }
