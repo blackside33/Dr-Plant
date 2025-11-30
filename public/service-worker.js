@@ -1,4 +1,4 @@
-const CACHE_NAME = 'doctor-plant-v1.3';
+const CACHE_NAME = 'dr-plant-v1.3';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',

@@ -1,6 +1,6 @@
 {
-  "short_name": "Doctor Plant",
-  "name": "Doctor Plant V1.3",
+  "short_name": "Dr Plant",
+  "name": "Dr Plant",
   "description": "An application to diagnose plant diseases by analyzing images using AI. It provides treatment suggestions tailored to the Jordanian market and keeps a history of analyses.",
   "icons": [
     {

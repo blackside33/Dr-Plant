@@ -8,7 +8,7 @@ interface AnalysisReportProps {
     analysis: AnalysisResultData;
 }
 
-const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ analysis }, ref) => {
+export const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ analysis }, ref) => {
     const { t, i18n } = useTranslation();
 
     return (
@@ -16,7 +16,7 @@ const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ 
             <div className="max-w-4xl mx-auto font-sans p-4">
                 {/* PDF Header */}
                 <div className="mb-8 text-center">
-                    <h1 className="text-2xl font-bold text-[var(--color-primary)]">طبيب النبات</h1>
+                    <h1 className="text-2xl font-bold text-[var(--color-primary)]">Dr Plant</h1>
                     <p className="text-sm text-[var(--text-muted-light)] dark:text-[var(--text-muted-dark)]">AI Analysis Report</p>
                 </div>
 
@@ -76,39 +76,38 @@ const AnalysisReport = React.forwardRef<HTMLDivElement, AnalysisReportProps>(({ 
                                                 analysis.imageQualityScore <= 3 ? 'bg-violet-500' : analysis.imageQualityScore <= 7 ? 'bg-sky-500' : 'bg-teal-500'
                                             }`}
                                             style={{ width: `${analysis.imageQualityScore * 10}%` }}
-                                        ></div>
-                                    </div>
-                                    <span className="font-bold text-lg text-gray-700 dark:text-gray-300">{analysis.imageQualityScore}/10</span>
+                                    ></div>
                                 </div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{analysis.imageQualityDescription}</p>
+                                <span className="font-bold text-lg text-gray-700 dark:text-gray-300">{analysis.imageQualityScore}/10</span>
                             </div>
-                        )}
-                    </div>
-
-
-                    {/* Description Card */}
-                    <div className="bg-black/5 dark:bg-black/20 p-6 rounded-xl border border-black/5 dark:border-white/10 pdf-card">
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{t('description')}</h3>
-                        <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2 whitespace-pre-wrap leading-relaxed">
-                            {analysis.description}
-                        </div>
-                    </div>
-                    
-                    {/* Recommendations */}
-                    {analysis.treatments.length > 0 && (
-                        <div>
-                            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 text-center">{t('recommendations')}</h3>
-                            <div className="space-y-6">
-                                {analysis.treatments.map((treatment, index) => (
-                                    <TreatmentCard key={index} treatment={treatment} />
-                                ))}
-                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{analysis.imageQualityDescription}</p>
                         </div>
                     )}
                 </div>
+
+
+                {/* Description Card */}
+                <div className="bg-black/5 dark:bg-black/20 p-6 rounded-xl border border-black/5 dark:border-white/10 pdf-card">
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{t('description')}</h3>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2 whitespace-pre-wrap leading-relaxed">
+                        {analysis.description}
+                    </div>
+                </div>
+                
+                {/* Recommendations */}
+                {analysis.treatments.length > 0 && (
+                    <div>
+                        <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 text-center">{t('recommendations')}</h3>
+                        <div className="space-y-6">
+                            {analysis.treatments.map((treatment, index) => (
+                                <TreatmentCard key={index} treatment={treatment} />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 });
 
-export default AnalysisReport;
+// Changed export from default to named

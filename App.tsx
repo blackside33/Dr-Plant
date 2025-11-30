@@ -148,7 +148,7 @@ const Step5Illustration: React.FC = () => (
         {/* Header */}
         <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" transform="scale(0.5) translate(10, -5)" fill="#D6DDE4" />
-        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Dr Plant</text>
         <path d="M165 9a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 00165 13z" fill="#89A1B0" strokeWidth="1.5" />
         <circle cx="178" cy="12" r="8" fill="none" stroke="#89A1B0" strokeWidth="1.5" style={{ animation: 'pulse-dot 2s infinite' }}/>
         
@@ -176,7 +176,7 @@ const Step6Illustration: React.FC = () => (
         {/* Header */}
         <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" transform="scale(0.5) translate(10, -5)" fill="#D6DDE4" />
-        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Dr Plant</text>
         <path d="M185 18v-15m0 0c-3.125 0-5.25 2.625-5.25 5.25s2.125 5.25 5.25 5.25c3.125 0 5.25-2.625 5.25-5.25S188.125 3 185 3z M176 18h18" stroke="#89A1B0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
         <circle cx="185" cy="12" r="8" fill="none" stroke="#89A1B0" strokeWidth="1.5" style={{ animation: 'pulse-dot 2s infinite' }}/>
         
@@ -201,7 +201,7 @@ const Step7Illustration: React.FC = () => (
     <svg viewBox="0 0 200 120" className="w-full h-auto rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
         {/* Header */}
         <rect x="2" y="2" width="196" height="20" fill="#FFFFFF" rx="3" />
-        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Doctor Plant</text>
+        <text x="30" y="15" fontFamily="sans-serif" fontSize="6" fontWeight="bold" fill="#89A1B0">Dr Plant</text>
         
         {/* Theme Switch */}
         <g transform="translate(155, 6)">
@@ -744,7 +744,7 @@ function App() {
         if (err.message === 'SERVICE_UNAVAILABLE') {
             setTipsError(t('serviceUnavailableError'));
         } else {
-            setTipsError(err.message || t('weatherErrorBody'));
+            setTipsError(t('weatherErrorBody'));
         }
     } finally {
         setIsTipsLoading(false);

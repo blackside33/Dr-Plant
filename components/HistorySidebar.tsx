@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
-import AnalysisReport from './AnalysisReport'; 
+import { AnalysisReport } from './AnalysisReport'; 
 import { DownloadIcon, BugIcon } from './icons';
 
 interface HistorySidebarProps {

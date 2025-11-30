@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AnalysisResultData } from '../types';
 import { LeafIcon, DownloadIcon, JordanianSpinner } from './icons';
-import AnalysisReport from './AnalysisReport';
+import { AnalysisReport } from './AnalysisReport';
 
 const Spinner: React.FC<{ messageKey: string }> = ({ messageKey }) => {
   const { t } = useTranslation();
